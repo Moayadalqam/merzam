@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code - Wood Location | Mirzaam 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #1a1412;
+            --bg-card: #2a2220;
+            --gold: #c9a227;
+            --gold-light: #e8d48b;
+            --cream: #f5f0e6;
+            --text: #faf8f5;
+            --text-muted: #a39e96;
+            --success: #4ade80;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .logo-mark {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--gold), #8B6914);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--bg-dark);
+        }
+
+        .logo-text {
+            text-align: left;
+        }
+
+        .logo-en {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--cream);
+        }
+
+        .logo-ar {
+            font-size: 12px;
+            color: var(--gold);
+        }
+
+        .qr-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--cream);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        .url-input-group {
+            margin-bottom: 24px;
+        }
+
+        .url-input-group label {
+            display: block;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--cream);
+            margin-bottom: 8px;
+        }
+
+        .url-input {
+            width: 100%;
+            padding: 14px 16px;
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--bg-dark);
+            background: var(--cream);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 14px 24px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--bg-dark);
+            background: linear-gradient(135deg, var(--gold), #8B6914);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: all 0.2s;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(201, 162, 39, 0.3);
+        }
+
+        .qr-wrapper {
+            background: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        .qr-wrapper img {
+            display: block;
+            width: 250px;
+            height: 250px;
+        }
+
+        .qr-placeholder {
+            width: 250px;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(201, 162, 39, 0.15);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            color: var(--gold-light);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 14px 28px;
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .download-btn:hover {
+            background: var(--gold);
+            color: var(--bg-dark);
+        }
+
+        .download-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .instructions {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: left;
+        }
+
+        .instructions h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--cream);
+        }
+
+        .instructions ol {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 2;
+            padding-left: 20px;
+        }
+
+        .success-note {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            border-radius: 10px;
+            color: #86efac;
+            font-size: 13px;
+            display: none;
+        }
+
+        .success-note.show {
+            display: block;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                color: #000;
+            }
+            .qr-card {
+                background: #fff;
+                box-shadow: none;
+                border: 2px solid #000;
+            }
+            .instructions, .generate-btn, .url-input-group, .download-btn {
+                display: none;
+            }
+            h1, .subtitle, .badge {
+                color: #000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-mark">W</div>
+            <div class="logo-text">
+                <div class="logo-en">Wood Location</div>
+                <div class="logo-ar">وود لوكيشن</div>
+            </div>
+        </div>
+
+        <div class="qr-card">
+            <h1>Scan to Contact Us</h1>
+            <p class="subtitle">امسح للتواصل معنا</p>
+
+            <div class="url-input-group">
+                <label>Enter your deployed URL:</label>
+                <input type="url" class="url-input" id="urlInput" placeholder="https://your-site.netlify.app" value="">
+            </div>
+
+            <button class="generate-btn" id="generateBtn" onclick="generateQR()">
+                Generate QR Code
+            </button>
+
+            <div class="qr-wrapper">
+                <div class="qr-placeholder" id="qrPlaceholder">
+                    Enter your URL above and click Generate
+                </div>
+                <img id="qrcode" src="" alt="QR Code" style="display: none;">
+            </div>
+
+            <div class="badge">Mirzaam Expo 2025</div>
+
+            <button class="download-btn" id="downloadBtn" onclick="downloadQR()" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+                Download QR Code
+            </button>
+
+            <div class="success-note" id="successNote">
+                ✅ QR Code generated! When scanned, it will open the form directly.
+            </div>
+
+            <div class="instructions">
+                <h3>📋 How to Deploy & Get QR Code</h3>
+                <ol>
+                    <li>Go to <a href="https://app.netlify.com/drop" target="_blank" style="color: var(--gold)">app.netlify.com/drop</a></li>
+                    <li>Drag & drop this project folder</li>
+                    <li>Copy your new URL (e.g., amazing-site-123.netlify.app)</li>
+                    <li>Paste URL above and click Generate</li>
+                    <li>Download & print the QR code</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQRUrl = '';
+
+        function generateQR() {
+            const urlInput = document.getElementById('urlInput');
+            const qrImg = document.getElementById('qrcode');
+            const placeholder = document.getElementById('qrPlaceholder');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const successNote = document.getElementById('successNote');
+            
+            let url = urlInput.value.trim();
+            
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+            
+            // Add https if not present
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+                urlInput.value = url;
+            }
+            
+            // Generate QR Code using QR Server API
+            const qrSize = 250;
+            currentQRUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrSize}&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=1a1412&margin=10`;
+            
+            qrImg.src = currentQRUrl;
+            qrImg.onload = function() {
+                placeholder.style.display = 'none';
+                qrImg.style.display = 'block';
+                downloadBtn.disabled = false;
+                successNote.classList.add('show');
+            };
+        }
+
+        function downloadQR() {
+            if (!currentQRUrl) return;
+            
+            // Create a larger version for download
+            const url = document.getElementById('urlInput').value.trim();
+            const downloadUrl = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=1a1412&margin=20`;
+            
+            fetch(downloadUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'wood-location-qr-code.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                })
+                .catch(() => {
+                    window.open(downloadUrl, '_blank');
+                });
+        }
+
+        // Allow Enter key to generate
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateQR();
+            }
+        });
+    </script>
+</body>
+</html>

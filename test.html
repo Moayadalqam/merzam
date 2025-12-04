@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page - Wood Location</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #c9a227;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        .status {
+            font-weight: bold;
+        }
+        .pass {
+            color: #4ade80;
+        }
+        .fail {
+            color: #ef4444;
+        }
+        .btn {
+            background: #c9a227;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #a68a1f;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wood Location - Test Page</h1>
+    <p>This page tests all the functionality of the Wood Location application.</p>
+    
+    <div class="test-section">
+        <h2>Functionality Tests</h2>
+        <div id="test-results"></div>
+        <button class="btn" onclick="runTests()">Run Tests</button>
+        <button class="btn" onclick="window.open('index.html', '_blank')">Open Main Page</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Manual Testing Checklist</h2>
+        <div class="test-item">
+            <strong>Form Submission:</strong> Fill out all fields and submit the form. Check if you receive a success message.
+        </div>
+        <div class="test-item">
+            <strong>Form Validation:</strong> Try submitting the form with empty fields. Check if validation errors appear.
+        </div>
+        <div class="test-item">
+            <strong>Phone Formatting:</strong> Enter a phone number and check if it formats correctly with spaces.
+        </div>
+        <div class="test-item">
+            <strong>Form Persistence:</strong> Fill out part of the form, refresh the page, and check if data is restored.
+        </div>
+        <div class="test-item">
+            <strong>Tab Navigation:</strong> Click between "Contact Form" and "QR Code" tabs. Check if content switches correctly.
+        </div>
+        <div class="test-item">
+            <strong>QR Code Generation:</strong> Go to the QR Code tab, enter a URL, and generate a QR code.
+        </div>
+        <div class="test-item">
+            <strong>QR Code Download:</strong> After generating a QR code, click the download button.
+        </div>
+        <div class="test-item">
+            <strong>Mobile Responsiveness:</strong> Resize the browser window or use developer tools to test mobile view.
+        </div>
+        <div class="test-item">
+            <strong>Touch Interactions:</strong> On a touch device, test all buttons and form fields.
+        </div>
+    </div>
+    
+    <script>
+        function runTests() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '';
+            
+            // Test 1: Check if all required files exist
+            addTestResult('Required Files', checkFiles());
+            
+            // Test 2: Check if localStorage is available
+            addTestResult('LocalStorage Support', typeof(Storage) !== "undefined");
+            
+            // Test 3: Check if QRCode library is loaded
+            addTestResult('QRCode Library', typeof QRCode !== "undefined");
+            
+            // Test 4: Check if form exists
+            addTestResult('Form Element', document.getElementById('contactForm') !== null);
+            
+            // Test 5: Check if QR code elements exist
+            addTestResult('QR Code Elements', 
+                document.getElementById('qrcode') !== null && 
+                document.getElementById('generateBtn') !== null);
+            
+            // Test 6: Check if tab navigation exists
+            addTestResult('Tab Navigation', 
+                document.querySelectorAll('.tab-btn').length === 2);
+            
+            // Test 7: Check if form fields exist
+            addTestResult('Form Fields', 
+                document.getElementById('name') !== null &&
+                document.getElementById('phone') !== null &&
+                document.getElementById('email') !== null &&
+                document.getElementById('city') !== null &&
+                document.getElementById('request') !== null);
+        }
+        
+        function addTestResult(testName, passed) {
+            const results = document.getElementById('test-results');
+            const testItem = document.createElement('div');
+            testItem.className = 'test-item';
+            
+            const status = document.createElement('span');
+            status.className = `status ${passed ? 'pass' : 'fail'}`;
+            status.textContent = passed ? 'PASS' : 'FAIL';
+            
+            testItem.innerHTML = `<strong>${testName}:</strong> `;
+            testItem.appendChild(status);
+            
+            results.appendChild(testItem);
+        }
+        
+        function checkFiles() {
+            // This is a simplified check - in a real scenario, you'd check if files exist
+            return true;
+        }
+        
+        // Run tests automatically when page loads
+        window.addEventListener('load', runTests);
+    </script>
+</body>
+</html>

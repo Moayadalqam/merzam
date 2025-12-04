@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1412">
+    <meta name="description" content="Wood Location - Interior Design & Woodwork Specialists | Mirzaam Expo 2025">
+    <title>Wood Location | Mirzaam Expo 2025</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+    
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+
+    <div class="page">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-mark">
+                    <img src="https://instagram.famm10-1.fna.fbcdn.net/v/t51.2885-19/446507470_1267705374208726_25287643029938700_n.jpg?stp=dst-jpg_s320x320_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.famm10-1.fna.fbcdn.net&_nc_cat=110&_nc_oc=Q6cZ2QFMzIooXcK8OqUAXcddsR_teyenkErKD9K81mGWVRjOuZw7A2l6Fl27GWhIEAGYwkCV2zIBatVaZCNQiGEUNjJR&_nc_ohc=BE231lDQhEUQ7kNvwH69YHA&_nc_gid=vgW-FPzficPJnrDT4xLW1Q&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfmRUgUj68v8-VhCk00VMGbvboRT_34bj8wODpsXqHPsxw&oe=693788E4&_nc_sid=8b3546" alt="Wood Location Logo" class="logo-image">
+                </div>
+                <div class="logo-text">
+                    <span class="logo-en">Wood Location</span>
+                    <span class="logo-ar">وود لوكيشن</span>
+                </div>
+            </div>
+            
+            <div class="badge">Mirzaam Expo 2025</div>
+            
+            <p class="tagline">Interior Design & Woodwork Specialists</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="form">Contact Form</button>
+            <button class="tab-btn" data-tab="qr">QR Code</button>
+        </div>
+
+        <!-- Form Card -->
+        <main class="card" id="formTab">
+            <div class="card-header">
+                <h2>Get in Touch</h2>
+                <p>We'll contact you soon</p>
+            </div>
+
+            <!-- TESTING EMAIL: moayad@qualiasolutions.net -->
+            <!-- PRODUCTION: Change to info@woodlocation.net -->
+            <form id="contactForm" action="https://formsubmit.co/moayad@qualiasolutions.net" method="POST">
+                <!-- FormSubmit Configuration -->
+                <input type="hidden" name="_subject" value="New Inquiry from Mirzaam Expo 2025 - Wood Location">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_autoresponse" value="Thank you for contacting Wood Location! We will get back to you soon.">
+                <input type="hidden" name="_next" value="#success">
+                
+                <!-- Name -->
+                <div class="field">
+                    <label for="name">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="Name"
+                        placeholder="Your name"
+                        autocomplete="name"
+                        required
+                    >
+                </div>
+
+                <!-- Phone -->
+                <div class="field">
+                    <label for="phone">Phone Number</label>
+                    <div class="phone-row">
+                        <select id="countryCode" name="Country Code" class="country-code">
+                            <option value="+965">🇰🇼 +965</option>
+                            <option value="+966">🇸🇦 +966</option>
+                            <option value="+971">🇦🇪 +971</option>
+                            <option value="+973">🇧🇭 +973</option>
+                            <option value="+974">🇶🇦 +974</option>
+                            <option value="+968">🇴🇲 +968</option>
+                            <option value="+962">🇯🇴 +962</option>
+                            <option value="+961">🇱🇧 +961</option>
+                            <option value="+970">🇵🇸 +970</option>
+                            <option value="+964">🇮🇶 +964</option>
+                            <option value="+963">🇸🇾 +963</option>
+                            <option value="+967">🇾🇪 +967</option>
+                            <option value="+20">🇪🇬 +20</option>
+                            <option value="+212">🇲🇦 +212</option>
+                            <option value="+216">🇹🇳 +216</option>
+                            <option value="+213">🇩🇿 +213</option>
+                            <option value="+218">🇱🇾 +218</option>
+                            <option value="+249">🇸🇩 +249</option>
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+44">🇬🇧 +44</option>
+                            <option value="+33">🇫🇷 +33</option>
+                            <option value="+49">🇩🇪 +49</option>
+                            <option value="+39">🇮🇹 +39</option>
+                            <option value="+34">🇪🇸 +34</option>
+                            <option value="+31">🇳🇱 +31</option>
+                            <option value="+32">🇧🇪 +32</option>
+                            <option value="+41">🇨🇭 +41</option>
+                            <option value="+43">🇦🇹 +43</option>
+                            <option value="+46">🇸🇪 +46</option>
+                            <option value="+47">🇳🇴 +47</option>
+                            <option value="+45">🇩🇰 +45</option>
+                            <option value="+358">🇫🇮 +358</option>
+                            <option value="+48">🇵🇱 +48</option>
+                            <option value="+90">🇹🇷 +90</option>
+                            <option value="+7">🇷🇺 +7</option>
+                            <option value="+380">🇺🇦 +380</option>
+                            <option value="+91">🇮🇳 +91</option>
+                            <option value="+92">🇵🇰 +92</option>
+                            <option value="+880">🇧🇩 +880</option>
+                            <option value="+94">🇱🇰 +94</option>
+                            <option value="+977">🇳🇵 +977</option>
+                            <option value="+86">🇨🇳 +86</option>
+                            <option value="+81">🇯🇵 +81</option>
+                            <option value="+82">🇰🇷 +82</option>
+                            <option value="+66">🇹🇭 +66</option>
+                            <option value="+60">🇲🇾 +60</option>
+                            <option value="+65">🇸🇬 +65</option>
+                            <option value="+62">🇮🇩 +62</option>
+                            <option value="+63">🇵🇭 +63</option>
+                            <option value="+84">🇻🇳 +84</option>
+                            <option value="+61">🇦🇺 +61</option>
+                            <option value="+64">🇳🇿 +64</option>
+                            <option value="+27">🇿🇦 +27</option>
+                            <option value="+234">🇳🇬 +234</option>
+                            <option value="+254">🇰🇪 +254</option>
+                            <option value="+55">🇧🇷 +55</option>
+                            <option value="+52">🇲🇽 +52</option>
+                            <option value="+54">🇦🇷 +54</option>
+                            <option value="+57">🇨🇴 +57</option>
+                        </select>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="Phone"
+                            class="phone-input"
+                            placeholder="Enter your number"
+                            inputmode="numeric"
+                            maxlength="15"
+                            autocomplete="tel"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="field">
+                    <label for="email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="Email"
+                        placeholder="email@example.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <!-- City - Verified from Wikipedia Kuwait Areas -->
+                <div class="field">
+                    <label for="city">Area</label>
+                    <div class="select-wrapper">
+                        <select id="city" name="Area" required>
+                            <option value="" disabled selected>Select your area</option>
+                            
+                            <!-- Capital Governorate -->
+                            <optgroup label="── Capital Governorate ──">
+                                <option value="Kuwait City">Kuwait City</option>
+                                <option value="Sharq">Sharq</option>
+                                <option value="Mirqab">Mirqab</option>
+                                <option value="Qibla">Qibla</option>
+                                <option value="Salhiya">Salhiya</option>
+                                <option value="Jibla">Jibla</option>
+                                <option value="Bneid Al-Qar">Bneid Al-Qar</option>
+                                <option value="Dasma">Dasma</option>
+                                <option value="Daiya">Daiya</option>
+                                <option value="Mansouriya">Mansouriya</option>
+                                <option value="Abdullah Al-Salem">Abdullah Al-Salem</option>
+                                <option value="Nuzha">Nuzha</option>
+                                <option value="Faiha">Faiha</option>
+                                <option value="Shamiya">Shamiya</option>
+                                <option value="Rawda">Rawda</option>
+                                <option value="Adailiya">Adailiya</option>
+                                <option value="Khaldiya">Khaldiya</option>
+                                <option value="Kaifan">Kaifan</option>
+                                <option value="Qadsiya">Qadsiya</option>
+                                <option value="Qortuba">Qortuba</option>
+                                <option value="Surra">Surra</option>
+                                <option value="Yarmouk">Yarmouk</option>
+                                <option value="Shuwaikh">Shuwaikh</option>
+                                <option value="Granada">Granada</option>
+                                <option value="Sulaibikhat">Sulaibikhat</option>
+                                <option value="Doha">Doha</option>
+                                <option value="Nahdha">Nahdha</option>
+                                <option value="Qairawan">Qairawan</option>
+                            </optgroup>
+
+                            <!-- Hawalli Governorate -->
+                            <optgroup label="── Hawalli Governorate ──">
+                                <option value="Hawalli">Hawalli</option>
+                                <option value="Salmiya">Salmiya</option>
+                                <option value="Rumaithiya">Rumaithiya</option>
+                                <option value="Jabriya">Jabriya</option>
+                                <option value="Shaab">Shaab</option>
+                                <option value="Salwa">Salwa</option>
+                                <option value="Bida'a">Bida'a</option>
+                                <option value="Anjafa">Anjafa</option>
+                                <option value="Zahra">Zahra</option>
+                                <option value="Hitteen">Hitteen</option>
+                                <option value="Salam">Salam</option>
+                                <option value="Siddiq">Siddiq</option>
+                                <option value="Shuhada">Shuhada</option>
+                                <option value="Bayan">Bayan</option>
+                                <option value="Mishref">Mishref</option>
+                                <option value="Mubarak Al-Abdullah">Mubarak Al-Abdullah</option>
+                            </optgroup>
+
+                            <!-- Farwaniya Governorate -->
+                            <optgroup label="── Farwaniya Governorate ──">
+                                <option value="Farwaniya">Farwaniya</option>
+                                <option value="Khaitan">Khaitan</option>
+                                <option value="Omariya">Omariya</option>
+                                <option value="Rabiya">Rabiya</option>
+                                <option value="Andalus">Andalus</option>
+                                <option value="Ishbiliya">Ishbiliya</option>
+                                <option value="Jleeb Al-Shuyoukh">Jleeb Al-Shuyoukh</option>
+                                <option value="Riggae">Riggae</option>
+                                <option value="Ardiya">Ardiya</option>
+                                <option value="Firdous">Firdous</option>
+                                <option value="Al-Rai">Al-Rai</option>
+                                <option value="Rehab">Rehab</option>
+                                <option value="Dajeej">Dajeej</option>
+                                <option value="Sabah Al-Nasser">Sabah Al-Nasser</option>
+                                <option value="Abdullah Al-Mubarak">Abdullah Al-Mubarak</option>
+                            </optgroup>
+
+                            <!-- Ahmadi Governorate -->
+                            <optgroup label="── Ahmadi Governorate ──">
+                                <option value="Ahmadi">Ahmadi</option>
+                                <option value="Fintas">Fintas</option>
+                                <option value="Mahboula">Mahboula</option>
+                                <option value="Fahaheel">Fahaheel</option>
+                                <option value="Mangaf">Mangaf</option>
+                                <option value="Abu Halifa">Abu Halifa</option>
+                                <option value="Sabahiya">Sabahiya</option>
+                                <option value="Riqqa">Riqqa</option>
+                                <option value="Hadiya">Hadiya</option>
+                                <option value="Egaila">Egaila</option>
+                                <option value="Dhaher">Dhaher</option>
+                                <option value="Mina Abdullah">Mina Abdullah</option>
+                                <option value="Khiran">Khiran</option>
+                                <option value="Wafra">Wafra</option>
+                                <option value="Jaber Al-Ali">Jaber Al-Ali</option>
+                                <option value="Fahad Al-Ahmad">Fahad Al-Ahmad</option>
+                                <option value="Sabah Al-Ahmad">Sabah Al-Ahmad</option>
+                                <option value="Ali Sabah Al-Salem">Ali Sabah Al-Salem</option>
+                            </optgroup>
+
+                            <!-- Jahra Governorate -->
+                            <optgroup label="── Jahra Governorate ──">
+                                <option value="Jahra">Jahra</option>
+                                <option value="Qasr">Qasr</option>
+                                <option value="Taima">Taima</option>
+                                <option value="Nasseem">Nasseem</option>
+                                <option value="Oyoun">Oyoun</option>
+                                <option value="Naeem">Naeem</option>
+                                <option value="Waha">Waha</option>
+                                <option value="Nahdha">Nahdha</option>
+                                <option value="Saad Al-Abdullah">Saad Al-Abdullah</option>
+                                <option value="Sulaibiya">Sulaibiya</option>
+                                <option value="Amghara">Amghara</option>
+                                <option value="Abdali">Abdali</option>
+                                <option value="Subiya">Subiya</option>
+                                <option value="Kabd">Kabd</option>
+                            </optgroup>
+
+                            <!-- Mubarak Al-Kabeer Governorate -->
+                            <optgroup label="── Mubarak Al-Kabeer Governorate ──">
+                                <option value="Mubarak Al-Kabeer">Mubarak Al-Kabeer</option>
+                                <option value="Sabah Al-Salem">Sabah Al-Salem</option>
+                                <option value="Messila">Messila</option>
+                                <option value="Qusour">Qusour</option>
+                                <option value="Qurain">Qurain</option>
+                                <option value="Adan">Adan</option>
+                                <option value="Fnaitees">Fnaitees</option>
+                                <option value="Abu Futaira">Abu Futaira</option>
+                                <option value="Abu Al Hasaniya">Abu Al Hasaniya</option>
+                                <option value="Masayel">Masayel</option>
+                                <option value="Subhan">Subhan</option>
+                            </optgroup>
+                        </select>
+                        <svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Request -->
+                <div class="field">
+                    <label for="request">How can we help?</label>
+                    <textarea 
+                        id="request" 
+                        name="Request"
+                        placeholder="Tell us about your project..."
+                        rows="3"
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn" id="submitBtn">
+                    <span class="btn-text">Submit</span>
+                    <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                    <div class="btn-spinner"></div>
+                </button>
+            </form>
+
+            <!-- Success State -->
+            <div class="success" id="success">
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                </div>
+                <h3>Successfully Sent!</h3>
+                <p>Thank you, we'll contact you soon</p>
+                <button class="btn-secondary" onclick="resetForm()">Send Another Request</button>
+            </div>
+        </main>
+
+        <!-- QR Code Card -->
+        <main class="card" id="qrTab" style="display: none;">
+            <div class="card-header">
+                <h2>QR Code Generator</h2>
+                <p>Generate QR code for this form</p>
+            </div>
+
+            <div class="url-input-group">
+                <label>Enter your deployed URL:</label>
+                <input type="url" class="url-input" id="urlInput" placeholder="https://your-site.netlify.app" value="">
+            </div>
+
+            <button class="generate-btn" id="generateBtn" onclick="generateQR()">
+                Generate QR Code
+            </button>
+
+            <div class="qr-wrapper">
+                <div class="qr-placeholder" id="qrPlaceholder">
+                    Enter your URL above and click Generate
+                </div>
+                <div id="qrcode"></div>
+            </div>
+
+            <div class="badge">Mirzaam Expo 2025</div>
+
+            <button class="download-btn" id="downloadBtn" onclick="downloadQR()" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+                Download QR Code
+            </button>
+
+            <div class="success-note" id="successNote">
+                ✅ QR Code generated! When scanned, it will open the form directly.
+            </div>
+
+            <div class="instructions">
+                <h3>📋 How to Deploy & Get QR Code</h3>
+                <ol>
+                    <li>Go to <a href="https://app.netlify.com/drop" target="_blank" style="color: var(--gold)">app.netlify.com/drop</a></li>
+                    <li>Drag & drop this project folder</li>
+                    <li>Copy your new URL (e.g., amazing-site-123.netlify.app)</li>
+                    <li>Paste URL above and click Generate</li>
+                    <li>Download & print the QR code</li>
+                </ol>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <a href="https://www.instagram.com/wood_location" target="_blank" class="instagram">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+                <span>@wood_location</span>
+            </a>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
