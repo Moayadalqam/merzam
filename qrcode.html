@@ -3,394 +3,334 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code - Wood Location | Mirzaam 2025</title>
+    <meta name="theme-color" content="#0a0a0a">
+    <title>QR Code Generator | Wood Location</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
     <style>
-        :root {
-            --bg-dark: #1a1412;
-            --bg-card: #2a2220;
-            --gold: #c9a227;
-            --gold-light: #e8d48b;
-            --cream: #f5f0e6;
-            --text: #faf8f5;
-            --text-muted: #a39e96;
-            --success: #4ade80;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 500px;
-            width: 100%;
+        .qr-container {
             text-align: center;
         }
 
-        .logo {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 30px;
+        .url-field {
+            margin-bottom: 20px;
         }
 
-        .logo-mark {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--gold), #8B6914);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--bg-dark);
-        }
-
-        .logo-text {
-            text-align: left;
-        }
-
-        .logo-en {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--cream);
-        }
-
-        .logo-ar {
-            font-size: 12px;
-            color: var(--gold);
-        }
-
-        .qr-card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--cream);
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            font-size: 15px;
-        }
-
-        .url-input-group {
-            margin-bottom: 24px;
-        }
-
-        .url-input-group label {
+        .url-field label {
             display: block;
-            text-align: left;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--cream);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
             margin-bottom: 8px;
+            text-align: left;
         }
 
-        .url-input {
+        .url-field input {
             width: 100%;
             padding: 14px 16px;
             font-family: inherit;
             font-size: 15px;
-            color: var(--bg-dark);
+            color: var(--bg);
             background: var(--cream);
             border: 2px solid transparent;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             text-align: center;
         }
 
-        .url-input:focus {
+        .url-field input:focus {
             outline: none;
             border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.15);
         }
 
-        .generate-btn {
-            width: 100%;
-            padding: 14px 24px;
-            font-family: inherit;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--bg-dark);
-            background: linear-gradient(135deg, var(--gold), #8B6914);
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            margin-bottom: 30px;
-            transition: all 0.2s;
-        }
-
-        .generate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(201, 162, 39, 0.3);
-        }
-
-        .qr-wrapper {
-            background: #fff;
+        .qr-box {
+            background: white;
             padding: 20px;
-            border-radius: 16px;
+            border-radius: 12px;
             display: inline-block;
-            margin-bottom: 24px;
-        }
-
-        .qr-wrapper img {
-            display: block;
-            width: 250px;
-            height: 250px;
+            margin: 20px 0;
         }
 
         .qr-placeholder {
-            width: 250px;
-            height: 250px;
+            width: 180px;
+            height: 180px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #999;
-            font-size: 14px;
+            font-size: 13px;
             text-align: center;
-            padding: 20px;
+            padding: 16px;
         }
 
-        .badge {
-            display: inline-block;
-            background: rgba(201, 162, 39, 0.15);
-            border: 1px solid rgba(201, 162, 39, 0.3);
-            color: var(--gold-light);
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 500;
+        #qrcode {
+            width: 180px;
+            height: 180px;
         }
 
-        .download-btn {
+        #qrcode img {
+            width: 180px !important;
+            height: 180px !important;
+        }
+
+        .btn-download {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            margin-top: 20px;
-            padding: 14px 28px;
+            padding: 12px 24px;
             background: transparent;
             border: 2px solid var(--gold);
             color: var(--gold);
             font-family: inherit;
             font-weight: 600;
-            font-size: 15px;
-            text-decoration: none;
-            border-radius: 12px;
+            font-size: 14px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .download-btn:hover {
+        .btn-download:hover:not(:disabled) {
             background: var(--gold);
-            color: var(--bg-dark);
+            color: var(--bg);
         }
 
-        .download-btn:disabled {
-            opacity: 0.5;
+        .btn-download:disabled {
+            opacity: 0.4;
             cursor: not-allowed;
         }
 
-        .instructions {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            text-align: left;
+        .btn-download svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
         }
 
-        .instructions h3 {
-            font-size: 16px;
-            margin-bottom: 16px;
-            color: var(--cream);
-        }
-
-        .instructions ol {
-            color: var(--text-muted);
-            font-size: 14px;
-            line-height: 2;
-            padding-left: 20px;
-        }
-
-        .success-note {
-            margin-top: 20px;
-            padding: 16px;
+        .success-msg {
+            margin-top: 16px;
+            padding: 12px 16px;
             background: rgba(74, 222, 128, 0.1);
             border: 1px solid rgba(74, 222, 128, 0.3);
-            border-radius: 10px;
+            border-radius: 8px;
             color: #86efac;
             font-size: 13px;
             display: none;
         }
 
-        .success-note.show {
+        .success-msg.show {
             display: block;
         }
 
+        .instructions {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .instructions h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            color: var(--cream);
+            margin-bottom: 12px;
+        }
+
+        .instructions ol {
+            color: var(--text-muted);
+            font-size: 12px;
+            line-height: 1.9;
+            padding-left: 18px;
+        }
+
+        .instructions a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .instructions a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--cream);
+        }
+
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
         @media print {
-            body {
-                background: #fff;
-                color: #000;
-            }
-            .qr-card {
-                background: #fff;
-                box-shadow: none;
-                border: 2px solid #000;
-            }
-            .instructions, .generate-btn, .url-input-group, .download-btn {
-                display: none;
-            }
-            h1, .subtitle, .badge {
-                color: #000 !important;
-            }
+            body { background: white; }
+            .main { background: white; border: 2px solid #000; }
+            .instructions, .btn, .url-field, .btn-download, .back-link, .badge { display: none !important; }
+            .form-header h1, .form-header p { color: #000 !important; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">
-            <div class="logo-mark">W</div>
-            <div class="logo-text">
-                <div class="logo-en">Wood Location</div>
-                <div class="logo-ar">وود لوكيشن</div>
-            </div>
-        </div>
+        <header class="header">
+            <a href="index.html" class="back-link">
+                <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Back
+            </a>
+            <div class="badge">QR Generator</div>
+        </header>
 
-        <div class="qr-card">
-            <h1>Scan to Contact Us</h1>
-            <p class="subtitle">امسح للتواصل معنا</p>
-
-            <div class="url-input-group">
-                <label>Enter your deployed URL:</label>
-                <input type="url" class="url-input" id="urlInput" placeholder="https://your-site.netlify.app" value="">
+        <main class="main">
+            <div class="form-header">
+                <h1>QR Code</h1>
+                <p>Generate a QR code for your form</p>
             </div>
 
-            <button class="generate-btn" id="generateBtn" onclick="generateQR()">
-                Generate QR Code
-            </button>
-
-            <div class="qr-wrapper">
-                <div class="qr-placeholder" id="qrPlaceholder">
-                    Enter your URL above and click Generate
+            <div class="qr-container">
+                <div class="url-field">
+                    <label>Your Deployed URL</label>
+                    <input type="url" id="urlInput" placeholder="https://your-site.netlify.app">
                 </div>
-                <img id="qrcode" src="" alt="QR Code" style="display: none;">
+
+                <button class="btn" id="generateBtn" onclick="generateQR()">
+                    <span class="btn-text">Generate QR Code</span>
+                    <div class="spinner"></div>
+                </button>
+
+                <div class="qr-box">
+                    <div class="qr-placeholder" id="qrPlaceholder">
+                        Enter URL and click Generate
+                    </div>
+                    <div id="qrcode"></div>
+                </div>
+
+                <button class="btn-download" id="downloadBtn" onclick="downloadQR()" disabled>
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                    Download PNG
+                </button>
+
+                <div class="success-msg" id="successMsg">
+                    QR Code ready! Scan to open form.
+                </div>
+
+                <div class="instructions">
+                    <h3>How to Deploy</h3>
+                    <ol>
+                        <li>Go to <a href="https://app.netlify.com/drop" target="_blank">app.netlify.com/drop</a></li>
+                        <li>Drag & drop this project folder</li>
+                        <li>Copy your new URL</li>
+                        <li>Paste above and generate QR</li>
+                        <li>Download & print</li>
+                    </ol>
+                </div>
             </div>
+        </main>
 
-            <div class="badge">Mirzaam Expo 2025</div>
-
-            <button class="download-btn" id="downloadBtn" onclick="downloadQR()" disabled>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                </svg>
-                Download QR Code
-            </button>
-
-            <div class="success-note" id="successNote">
-                ✅ QR Code generated! When scanned, it will open the form directly.
-            </div>
-
-            <div class="instructions">
-                <h3>📋 How to Deploy & Get QR Code</h3>
-                <ol>
-                    <li>Go to <a href="https://app.netlify.com/drop" target="_blank" style="color: var(--gold)">app.netlify.com/drop</a></li>
-                    <li>Drag & drop this project folder</li>
-                    <li>Copy your new URL (e.g., amazing-site-123.netlify.app)</li>
-                    <li>Paste URL above and click Generate</li>
-                    <li>Download & print the QR code</li>
-                </ol>
-            </div>
-        </div>
+        <footer class="footer">
+            <a href="https://www.instagram.com/wood_location" target="_blank" class="social">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                @wood_location
+            </a>
+        </footer>
     </div>
 
     <script>
         let currentQRUrl = '';
+        const urlInput = document.getElementById('urlInput');
+
+        // Auto-detect URL if deployed
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+            urlInput.value = window.location.origin;
+        }
+
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') generateQR();
+        });
 
         function generateQR() {
-            const urlInput = document.getElementById('urlInput');
-            const qrImg = document.getElementById('qrcode');
+            const qrContainer = document.getElementById('qrcode');
             const placeholder = document.getElementById('qrPlaceholder');
             const downloadBtn = document.getElementById('downloadBtn');
-            const successNote = document.getElementById('successNote');
-            
+            const generateBtn = document.getElementById('generateBtn');
+            const successMsg = document.getElementById('successMsg');
+
             let url = urlInput.value.trim();
-            
             if (!url) {
                 alert('Please enter a URL');
                 return;
             }
-            
-            // Add https if not present
+
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
                 url = 'https://' + url;
                 urlInput.value = url;
             }
-            
-            // Generate QR Code using QR Server API
-            const qrSize = 250;
-            currentQRUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrSize}&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=1a1412&margin=10`;
-            
-            qrImg.src = currentQRUrl;
-            qrImg.onload = function() {
+
+            generateBtn.classList.add('loading');
+            generateBtn.disabled = true;
+
+            // Use QR Server API (no library needed)
+            currentQRUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=a1622d&margin=8`;
+
+            qrContainer.innerHTML = '';
+            const img = document.createElement('img');
+            img.src = currentQRUrl;
+            img.alt = 'QR Code';
+
+            img.onload = () => {
                 placeholder.style.display = 'none';
-                qrImg.style.display = 'block';
+                qrContainer.appendChild(img);
                 downloadBtn.disabled = false;
-                successNote.classList.add('show');
+                successMsg.classList.add('show');
+                generateBtn.classList.remove('loading');
+                generateBtn.disabled = false;
+                if (navigator.vibrate) navigator.vibrate(50);
+            };
+
+            img.onerror = () => {
+                alert('Error generating QR code');
+                placeholder.style.display = 'flex';
+                generateBtn.classList.remove('loading');
+                generateBtn.disabled = false;
             };
         }
 
         function downloadQR() {
             if (!currentQRUrl) return;
-            
-            // Create a larger version for download
-            const url = document.getElementById('urlInput').value.trim();
-            const downloadUrl = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=1a1412&margin=20`;
-            
-            fetch(downloadUrl)
-                .then(response => response.blob())
-                .then(blob => {
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'wood-location-qr-code.png';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                })
-                .catch(() => {
-                    window.open(downloadUrl, '_blank');
-                });
-        }
 
-        // Allow Enter key to generate
-        document.getElementById('urlInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                generateQR();
-            }
-        });
+            const url = urlInput.value.trim();
+            const downloadUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=a1622d&margin=16`;
+
+            fetch(downloadUrl)
+                .then(res => res.blob())
+                .then(blob => {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = 'wood-location-qr.png';
+                    a.click();
+                    URL.revokeObjectURL(a.href);
+                    if (navigator.vibrate) navigator.vibrate(50);
+                })
+                .catch(() => window.open(downloadUrl, '_blank'));
+        }
     </script>
 </body>
 </html>
