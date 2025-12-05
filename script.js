@@ -66,19 +66,23 @@ function setupFormSubmission() {
                 headers: { 'Accept': 'application/json' }
             });
 
-            if (response.ok) {
+            const result = await response.json();
+
+            if (response.ok && result.success) {
                 form.classList.add('hidden');
                 success.classList.add('show');
                 showNotification('Submitted successfully!', 'success');
                 clearSavedFormData();
                 if (navigator.vibrate) navigator.vibrate(100);
             } else {
-                throw new Error('Submission failed');
+                throw new Error(result.message || 'Submission failed');
             }
         } catch (error) {
             console.error('Error:', error);
             showNotification('Error. Please try again.', 'error');
-            form.submit(); // Fallback
+            // Fallback to regular form submission
+            form.action = form.action.replace('/ajax/', '/');
+            form.submit();
         } finally {
             btn.classList.remove('loading');
             btn.disabled = false;

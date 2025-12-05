@@ -257,10 +257,8 @@
         let currentQRUrl = '';
         const urlInput = document.getElementById('urlInput');
 
-        // Auto-detect URL if deployed
-        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-            urlInput.value = window.location.origin;
-        }
+        // Auto-detect URL (works for both deployed and localhost)
+        urlInput.value = window.location.origin;
 
         urlInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') generateQR();
