@@ -58,27 +58,52 @@ function setupPhoneInput() {
     });
 }
 
-// Form Submission - Native submission to FormSubmit (most reliable)
+// Form Submission - AJAX to FormSubmit
 function setupFormSubmission() {
     const form = document.getElementById('contactForm');
     if (!form) return;
 
     const btn = document.getElementById('submitBtn');
+    const success = document.getElementById('success');
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
         // Validate first
         if (!validateForm(form)) {
-            e.preventDefault();
             return;
         }
 
         // Show loading state
         btn.classList.add('loading');
         btn.disabled = true;
-        clearSavedFormData();
 
-        // Let form submit naturally to FormSubmit
-        // FormSubmit will redirect back to _next URL
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                form.classList.add('hidden');
+                success.classList.add('show');
+                clearSavedFormData();
+                if (navigator.vibrate) navigator.vibrate(100);
+            } else {
+                throw new Error(result.message || 'Submission failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('There was an error submitting the form. Please try again.');
+        } finally {
+            btn.classList.remove('loading');
+            btn.disabled = false;
+        }
     });
 }
 
