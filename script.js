@@ -58,52 +58,26 @@ function setupPhoneInput() {
     });
 }
 
-// Form Submission - AJAX to FormSubmit
+// Form Submission - Native POST to FormSubmit
 function setupFormSubmission() {
     const form = document.getElementById('contactForm');
     if (!form) return;
 
     const btn = document.getElementById('submitBtn');
-    const success = document.getElementById('success');
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // Validate first
+    form.addEventListener('submit', (e) => {
+        // Only validate - don't prevent default
         if (!validateForm(form)) {
+            e.preventDefault();
             return;
         }
 
-        // Show loading state
+        // Show loading and let form submit naturally
         btn.classList.add('loading');
         btn.disabled = true;
-
-        const formData = new FormData(form);
-
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                form.classList.add('hidden');
-                success.classList.add('show');
-                clearSavedFormData();
-                if (navigator.vibrate) navigator.vibrate(100);
-            } else {
-                throw new Error(result.message || 'Submission failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('There was an error submitting the form. Please try again.');
-        } finally {
-            btn.classList.remove('loading');
-            btn.disabled = false;
-        }
+        clearSavedFormData();
+        
+        // Form will submit to FormSubmit and redirect back
     });
 }
 
