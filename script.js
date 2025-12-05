@@ -4,10 +4,27 @@
 document.addEventListener('DOMContentLoaded', init);
 
 function init() {
+    checkSubmissionSuccess();
     setupPhoneInput();
     setupFormSubmission();
     setupFieldValidation();
     setupFormPersistence();
+}
+
+// Check if returning from successful FormSubmit submission
+function checkSubmissionSuccess() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('submitted') === 'true') {
+        const form = document.getElementById('contactForm');
+        const success = document.getElementById('success');
+        if (form && success) {
+            form.classList.add('hidden');
+            success.classList.add('show');
+            clearSavedFormData();
+            // Clean URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }
 }
 
 // Phone Input - Numbers only with formatting
@@ -41,52 +58,27 @@ function setupPhoneInput() {
     });
 }
 
-// Form Submission
+// Form Submission - Native submission to FormSubmit (most reliable)
 function setupFormSubmission() {
     const form = document.getElementById('contactForm');
     if (!form) return;
 
     const btn = document.getElementById('submitBtn');
-    const success = document.getElementById('success');
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    form.addEventListener('submit', (e) => {
+        // Validate first
+        if (!validateForm(form)) {
+            e.preventDefault();
+            return;
+        }
 
-        if (!validateForm(form)) return;
-
+        // Show loading state
         btn.classList.add('loading');
         btn.disabled = true;
+        clearSavedFormData();
 
-        const formData = new FormData(form);
-
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
-
-            const result = await response.json();
-
-            if (response.ok && result.success) {
-                form.classList.add('hidden');
-                success.classList.add('show');
-                showNotification('Submitted successfully!', 'success');
-                clearSavedFormData();
-                if (navigator.vibrate) navigator.vibrate(100);
-            } else {
-                throw new Error(result.message || 'Submission failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            showNotification('Error. Please try again.', 'error');
-            // Fallback to regular form submission
-            form.action = form.action.replace('/ajax/', '/');
-            form.submit();
-        } finally {
-            btn.classList.remove('loading');
-            btn.disabled = false;
-        }
+        // Let form submit naturally to FormSubmit
+        // FormSubmit will redirect back to _next URL
     });
 }
 
