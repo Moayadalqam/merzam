@@ -3,8 +3,10 @@ import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { LeadForm } from './components/LeadForm/LeadForm';
 import { QRGenerator } from './components/QRGenerator/QRGenerator';
 import { LanguageToggle } from './components/LanguageToggle/LanguageToggle';
+import { LoadingScreen } from './components/LoadingScreen/LoadingScreen';
 
 function AppContent() {
+  const [isLoading, setIsLoading] = useState(true);
   const { t } = useLanguage();
   const [page, setPage] = useState('form');
 
@@ -28,6 +30,14 @@ function AppContent() {
     window.location.hash = newPage === 'form' ? '' : newPage;
     setPage(newPage);
   };
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+  };
+
+  if (isLoading) {
+    return <LoadingScreen onComplete={handleLoadingComplete} />;
+  }
 
   return (
     <div className="container">
