@@ -32,21 +32,9 @@ export function LeadForm() {
 
     const servicesText = formatServicesForEmail();
 
-    // Prepare data for both services
-    const formData = {
-      name: state.name,
-      phone: state.phone,
-      email: state.email,
-      area: state.area,
-      'Project Scope': state.projectScope || 'Not specified',
-      'Project Urgency': state.urgency || 'Not specified',
-      'Services': servicesText,
-      _subject: 'New Inquiry - Mirzaam Expo 2025',
-    };
-
     // Send to both Google Sheets and FormSubmit in parallel
     try {
-      // Google Sheets request
+      // Google Sheets request (fire and forget)
       fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -62,14 +50,25 @@ export function LeadForm() {
         }),
       });
 
-      // FormSubmit AJAX request (no redirect needed)
-      fetch(FORMSUBMIT_URL, {
+      // FormSubmit - use FormData (more reliable than JSON)
+      const formData = new FormData();
+      formData.append('name', state.name);
+      formData.append('phone', state.phone);
+      formData.append('email', state.email);
+      formData.append('area', state.area);
+      formData.append('Project Scope', state.projectScope || 'Not specified');
+      formData.append('Project Urgency', state.urgency || 'Not specified');
+      formData.append('Services', servicesText);
+      formData.append('_subject', 'New Inquiry - Mirzaam Expo 2025');
+      formData.append('_captcha', 'false');
+      formData.append('_template', 'table');
+
+      await fetch(FORMSUBMIT_URL, {
         method: 'POST',
+        body: formData,
         headers: {
-          'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify(formData),
       });
 
       // Clear localStorage and show success
