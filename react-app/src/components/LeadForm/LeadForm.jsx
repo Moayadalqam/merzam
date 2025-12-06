@@ -9,6 +9,9 @@ import { UrgencySelector } from './SalesmanMode';
 const FORMSUBMIT_URL = 'https://formsubmit.co/moayad@qualiasolutions.net';
 const REDIRECT_URL = 'https://woodlocation.com/?submitted=true';
 
+// Google Apps Script Web App URL for saving leads to Google Sheets
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyYM6csdeVCDUrcuEAzdzHLGrCYkPHcd2tN7IUhzY_Hg77jprf5zLx8mCzv3rBD05X_Pw/exec';
+
 export function LeadForm() {
   const { t } = useLanguage();
   const formRef = useRef(null);
@@ -22,14 +25,46 @@ export function LeadForm() {
     resetForm,
   } = useLeadForm();
 
+  // Send data to Google Sheets (runs in background, doesn't block form)
+  const sendToGoogleSheets = async () => {
+    try {
+      const payload = {
+        name: state.name,
+        phone: state.phone,
+        email: state.email,
+        area: state.area,
+        projectScope: state.projectScope || 'Not specified',
+        urgency: state.urgency || 'Not specified',
+        services: formatServicesForEmail(),
+      };
+
+      // Send to Google Sheets (fire and forget - don't wait for response)
+      fetch(GOOGLE_SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Required for Google Apps Script
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch (error) {
+      // Silently fail - FormSubmit is the primary method
+      console.error('Google Sheets error:', error);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) {
       return;
     }
+
+    // Send to Google Sheets (background, non-blocking)
+    sendToGoogleSheets();
+
     // Clear localStorage before submitting
     localStorage.removeItem('woodLocationForm');
-    // Submit the form natively
+    // Submit the form natively to FormSubmit
     formRef.current?.submit();
   };
 
