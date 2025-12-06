@@ -7,7 +7,7 @@ import { ServiceSelector } from './ServiceSelector';
 import { UrgencySelector } from './SalesmanMode';
 
 const FORMSUBMIT_URL = 'https://formsubmit.co/moayad@qualiasolutions.net';
-const REDIRECT_URL = 'https://merzamnewbarcode.vercel.app/?submitted=true';
+const REDIRECT_URL = 'https://woodlocation.com/?submitted=true';
 
 export function LeadForm() {
   const { t } = useLanguage();
