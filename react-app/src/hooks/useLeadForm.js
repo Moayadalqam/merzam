@@ -218,6 +218,7 @@ export function useLeadForm() {
 
   return {
     state,
+    dispatch,
     setField,
     toggleService,
     setServiceOption,

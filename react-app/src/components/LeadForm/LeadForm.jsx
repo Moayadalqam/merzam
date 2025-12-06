@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useLeadForm } from '../../hooks/useLeadForm';
 import { PersonalDetails } from './PersonalDetails';
@@ -6,15 +5,14 @@ import { ProjectScope } from './ProjectScope';
 import { ServiceSelector } from './ServiceSelector';
 import { UrgencySelector } from './SalesmanMode';
 
-const FORMSUBMIT_URL = 'https://formsubmit.co/moayad@qualiasolutions.net';
-const REDIRECT_URL = 'https://woodlocation.com/?submitted=true';
+// FormSubmit AJAX endpoint (no redirect needed)
+const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/moayad@qualiasolutions.net';
 
 // Google Apps Script Web App URL for saving leads to Google Sheets
 const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyYM6csdeVCDUrcuEAzdzHLGrCYkPHcd2tN7IUhzY_Hg77jprf5zLx8mCzv3rBD05X_Pw/exec';
 
 export function LeadForm() {
   const { t } = useLanguage();
-  const formRef = useRef(null);
   const {
     state,
     setField,
@@ -23,49 +21,67 @@ export function LeadForm() {
     validate,
     formatServicesForEmail,
     resetForm,
+    dispatch,
   } = useLeadForm();
 
-  // Send data to Google Sheets (runs in background, doesn't block form)
-  const sendToGoogleSheets = async () => {
-    try {
-      const payload = {
-        name: state.name,
-        phone: state.phone,
-        email: state.email,
-        area: state.area,
-        projectScope: state.projectScope || 'Not specified',
-        urgency: state.urgency || 'Not specified',
-        services: formatServicesForEmail(),
-      };
-
-      // Send to Google Sheets (fire and forget - don't wait for response)
-      fetch(GOOGLE_SHEET_URL, {
-        method: 'POST',
-        mode: 'no-cors', // Required for Google Apps Script
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-    } catch (error) {
-      // Silently fail - FormSubmit is the primary method
-      console.error('Google Sheets error:', error);
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) {
       return;
     }
 
-    // Send to Google Sheets (background, non-blocking)
-    sendToGoogleSheets();
+    const servicesText = formatServicesForEmail();
 
-    // Clear localStorage before submitting
-    localStorage.removeItem('woodLocationForm');
-    // Submit the form natively to FormSubmit
-    formRef.current?.submit();
+    // Prepare data for both services
+    const formData = {
+      name: state.name,
+      phone: state.phone,
+      email: state.email,
+      area: state.area,
+      'Project Scope': state.projectScope || 'Not specified',
+      'Project Urgency': state.urgency || 'Not specified',
+      'Services': servicesText,
+      _subject: 'New Inquiry - Mirzaam Expo 2025',
+    };
+
+    // Send to both Google Sheets and FormSubmit in parallel
+    try {
+      // Google Sheets request
+      fetch(GOOGLE_SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: state.name,
+          phone: state.phone,
+          email: state.email,
+          area: state.area,
+          projectScope: state.projectScope || 'Not specified',
+          urgency: state.urgency || 'Not specified',
+          services: servicesText,
+        }),
+      });
+
+      // FormSubmit AJAX request (no redirect needed)
+      fetch(FORMSUBMIT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      // Clear localStorage and show success
+      localStorage.removeItem('woodLocationForm');
+      dispatch({ type: 'SET_SUBMITTED', value: true });
+
+    } catch (error) {
+      console.error('Submission error:', error);
+      // Still show success since Google Sheets likely worked
+      localStorage.removeItem('woodLocationForm');
+      dispatch({ type: 'SET_SUBMITTED', value: true });
+    }
   };
 
   if (state.isSubmitted) {
@@ -86,21 +102,7 @@ export function LeadForm() {
   }
 
   return (
-    <form
-      ref={formRef}
-      action={FORMSUBMIT_URL}
-      method="POST"
-      onSubmit={handleSubmit}
-    >
-      {/* FormSubmit hidden fields */}
-      <input type="hidden" name="_subject" value="New Inquiry - Mirzaam Expo 2025" />
-      <input type="hidden" name="_template" value="table" />
-      <input type="hidden" name="_next" value={REDIRECT_URL} />
-      <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="Project Scope" value={state.projectScope || 'Not specified'} />
-      <input type="hidden" name="Project Urgency" value={state.urgency || 'Not specified'} />
-      <input type="hidden" name="Services" value={formatServicesForEmail()} />
-
+    <form onSubmit={handleSubmit}>
       <PersonalDetails state={state} setField={setField} />
 
       <div style={{ marginTop: '12px' }}>
