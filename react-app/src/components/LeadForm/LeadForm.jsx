@@ -10,7 +10,7 @@ import { timeSlots } from '../../data/services';
 const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/moayad@qualiasolutions.net';
 
 // Google Apps Script Web App URL for saving leads to Google Sheets
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyYM6csdeVCDUrcuEAzdzHLGrCYkPHcd2tN7IUhzY_Hg77jprf5zLx8mCzv3rBD05X_Pw/exec';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwhoguFtJTTi4m4tmaIMnqEOqwKVDhQ5fS-G99qCcO5YkVaPBqfEpYl7QzQQTeqDEUozQ/exec';
 
 export function LeadForm() {
   const { t } = useLanguage();

@@ -6,7 +6,7 @@ export function ScopeSelector({ selectedItems, onToggle }) {
 
   return (
     <div className="form-section">
-      <h3 className="section-title">{t('Scope Required', 'النطاق المطلوب')}</h3>
+      <h3 className="section-title">{t('Customized Items Required', 'العناصر المخصصة المطلوبة')}</h3>
 
       <div className="scope-grid">
         {scopeItems.map((item) => (

@@ -29,8 +29,8 @@
  * 10. Update GOOGLE_SHEET_URL in LeadForm.jsx with the new URL
  */
 
-// Configuration - Update this with your Sheet ID
-const SHEET_ID = 'YOUR_SHEET_ID_HERE'; // Get from spreadsheet URL
+// Configuration
+const SHEET_ID = '1jCP6QFngpjSxiJimYavjuvYzbFtbR8hnOE0tg5SrdjM';
 const SHEET_NAME = 'Leads'; // Name of the sheet tab
 
 function doPost(e) {
