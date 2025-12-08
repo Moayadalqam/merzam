@@ -4,7 +4,8 @@ import { PersonalDetails } from './PersonalDetails';
 import { DesignRequirements } from './DesignRequirements';
 import { ScopeSelector } from './ScopeSelector';
 import { SiteVisitBooking } from './SiteVisitBooking';
-import { timeSlots } from '../../data/services';
+import { ProjectAssessment } from './ProjectAssessment';
+import { timeSlots, projectPriorities, projectValues } from '../../data/services';
 
 // FormSubmit AJAX endpoint
 const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/moayad@qualiasolutions.net';
@@ -71,9 +72,9 @@ export function LeadForm() {
           scope: scopeText,
           visitDate: state.visitDate || '',
           visitTimeSlot: timeSlotText,
-          // Internal fields - defaults for Google Sheets
-          projectPriority: 'Standard',
-          projectValue: 'Medium',
+          // Project Assessment fields
+          projectPriority: getLabelById(projectPriorities, state.projectPriority) || 'Not specified',
+          projectValue: getLabelById(projectValues, state.projectValue) || 'Not specified',
           preSalesStatus: 'Not Contacted',
         }),
       });
@@ -146,6 +147,9 @@ export function LeadForm() {
 
       {/* Section 4: Site Visit Booking */}
       <SiteVisitBooking state={state} setField={setField} />
+
+      {/* Section 5: Project Assessment */}
+      <ProjectAssessment state={state} setField={setField} />
 
       <button type="submit" className="btn">
         <span className="btn-text">{t('Save Lead Form', 'حفظ نموذج العميل')}</span>
