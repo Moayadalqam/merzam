@@ -1,223 +1,57 @@
-export const services = [
-  {
-    id: 'wardrobes',
-    nameEn: 'Wardrobes / Walk-in Closets',
-    nameAr: 'خزانات تبديل',
-    options: [
-      { id: 'wooden-doors', labelEn: 'Wooden Doors', labelAr: 'ابواب خشب', type: 'checkbox' },
-      { id: 'aluminum-glass', labelEn: 'Aluminum w/ Clear Glass', labelAr: 'المنيوم مع زجاج شفاف', type: 'checkbox' },
-      { id: 'mirrored', labelEn: 'Mirrored Doors', labelAr: 'ابواب مع مراية', type: 'checkbox' },
-    ],
-    hasAreaInput: true,
-    areaUnit: 'sqm',
-  },
-  {
-    id: 'bedrooms',
-    nameEn: 'Bedrooms',
-    nameAr: 'غرف نوم',
-    options: [
-      {
-        id: 'bed-base',
-        labelEn: 'Bed Base',
-        labelAr: 'قاعدة السرير',
-        type: 'group',
-        groups: [
-          {
-            id: 'size',
-            labelEn: 'Size',
-            labelAr: 'الحجم',
-            type: 'radio',
-            choices: [
-              { id: 'single', labelEn: 'Single', labelAr: 'مفرد' },
-              { id: 'double', labelEn: 'Double', labelAr: 'مزدوج' },
-            ],
-          },
-          {
-            id: 'material',
-            labelEn: 'Material',
-            labelAr: 'المادة',
-            type: 'radio',
-            choices: [
-              { id: 'wood', labelEn: 'Wood', labelAr: 'خشب' },
-              { id: 'upholstered', labelEn: 'Upholstered', labelAr: 'منجد' },
-            ],
-          },
-        ],
-      },
-      {
-        id: 'nightstand',
-        labelEn: 'Nightstand',
-        labelAr: 'كومودينو',
-        type: 'radio',
-        choices: [
-          { id: 'standard', labelEn: 'Standard', labelAr: 'قياسي' },
-          { id: 'custom', labelEn: 'Custom Design', labelAr: 'تصميم مخصص' },
-        ],
-      },
-      {
-        id: 'headboard',
-        labelEn: 'Headboard',
-        labelAr: 'رأسية السرير',
-        type: 'radio',
-        choices: [
-          { id: 'wood', labelEn: 'Wood', labelAr: 'خشب' },
-          { id: 'upholstered', labelEn: 'Upholstered', labelAr: 'منجد' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'tv-units',
-    nameEn: 'TV Units',
-    nameAr: 'مكتبة تلفزيون',
-    options: [
-      {
-        id: 'lighting',
-        labelEn: 'Lighting',
-        labelAr: 'إضاءة',
-        type: 'radio',
-        choices: [
-          { id: 'with-lighting', labelEn: 'With Lighting', labelAr: 'مع إضاءة' },
-          { id: 'without-lighting', labelEn: 'Without Lighting', labelAr: 'بدون إضاءة' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'wall-cladding',
-    nameEn: 'Wall Cladding',
-    nameAr: 'تلبيس حوائط',
-    options: [
-      {
-        id: 'lighting',
-        labelEn: 'Lighting',
-        labelAr: 'إضاءة',
-        type: 'radio',
-        choices: [
-          { id: 'with-lighting', labelEn: 'With Lighting', labelAr: 'مع إضاءة' },
-          { id: 'without-lighting', labelEn: 'Without Lighting', labelAr: 'بدون إضاءة' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'prep-kitchen',
-    nameEn: 'Prep Kitchens / Coffee Corner',
-    nameAr: 'مطابخ تحضيرية',
-    options: [
-      {
-        id: 'layout',
-        labelEn: 'Layout',
-        labelAr: 'التخطيط',
-        type: 'radio',
-        choices: [
-          { id: 'upper-lower', labelEn: 'Upper & Lower', labelAr: 'علوي وسفلي' },
-          { id: 'lower-only', labelEn: 'Lower Only', labelAr: 'سفلي فقط' },
-        ],
-      },
-      {
-        id: 'countertop',
-        labelEn: 'Countertop',
-        labelAr: 'سطح العمل',
-        type: 'radio',
-        choices: [
-          { id: 'wood', labelEn: 'Wood', labelAr: 'خشب' },
-          { id: 'marble', labelEn: 'Marble', labelAr: 'رخام' },
-        ],
-      },
-      {
-        id: 'lighting',
-        labelEn: 'Lighting',
-        labelAr: 'إضاءة',
-        type: 'radio',
-        choices: [
-          { id: 'yes', labelEn: 'Yes', labelAr: 'نعم' },
-          { id: 'no', labelEn: 'No', labelAr: 'لا' },
-        ],
-      },
-      {
-        id: 'appliances',
-        labelEn: 'Appliances',
-        labelAr: 'الأجهزة',
-        type: 'radio',
-        choices: [
-          { id: 'built-in', labelEn: 'Built-in', labelAr: 'مدمجة' },
-          { id: 'none', labelEn: 'None', labelAr: 'بدون' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'diwaniya',
-    nameEn: 'Diwaniya Seating',
-    nameAr: 'جلسات ديوانية',
-    options: [
-      {
-        id: 'style',
-        labelEn: 'Style',
-        labelAr: 'الطراز',
-        type: 'checkbox',
-        choices: [
-          { id: 'wood-upholstery', labelEn: 'Wood + Upholstery', labelAr: 'خشب + تنجيد' },
-        ],
-      },
-      {
-        id: 'embroidery',
-        labelEn: 'Embroidery',
-        labelAr: 'تطريز',
-        type: 'radio',
-        choices: [
-          { id: 'with-embroidery', labelEn: 'With Embroidery', labelAr: 'مع تطريز' },
-          { id: 'without-embroidery', labelEn: 'Without Embroidery', labelAr: 'بدون تطريز' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'living-room',
-    nameEn: 'Living Room Seating',
-    nameAr: 'جلسات معيشة',
-    options: [
-      {
-        id: 'style',
-        labelEn: 'Style',
-        labelAr: 'الطراز',
-        type: 'checkbox',
-        choices: [
-          { id: 'wood-upholstery', labelEn: 'Wood + Upholstery', labelAr: 'خشب + تنجيد' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'hidden-doors',
-    nameEn: 'Hidden Doors',
-    nameAr: 'ابواب مخفية',
-    options: [
-      {
-        id: 'type',
-        labelEn: 'Door Type',
-        labelAr: 'نوع الباب',
-        type: 'radio',
-        choices: [
-          { id: 'sliding', labelEn: 'Sliding', labelAr: 'سحاب' },
-          { id: 'hinged', labelEn: 'Hinged', labelAr: 'مفصلات' },
-        ],
-      },
-    ],
-  },
+// Scope items - simple checkboxes for required work
+export const scopeItems = [
+  { id: 'wardrobe-changing', labelEn: 'Customized Wardrobe (Changing Room)', labelAr: 'خزانة ملابس مخصصة (غرفة تبديل)' },
+  { id: 'wardrobe-bedroom', labelEn: 'Customized Wardrobe (In Bedroom)', labelAr: 'خزانة ملابس مخصصة (في غرفة النوم)' },
+  { id: 'furniture', labelEn: 'Customized Furniture', labelAr: 'أثاث مخصص' },
+  { id: 'doors', labelEn: 'Customized Doors (Standard Flush)', labelAr: 'أبواب مخصصة (فلاش قياسي)' },
+  { id: 'beds', labelEn: 'Customized Beds', labelAr: 'أسرّة مخصصة' },
+  { id: 'headboards', labelEn: 'Customized Bed Headboards', labelAr: 'رأسيات أسرّة مخصصة' },
+  { id: 'curtains', labelEn: 'Customized Curtains', labelAr: 'ستائر مخصصة' },
+  { id: 'kitchen', labelEn: 'Customized Kitchen', labelAr: 'مطبخ مخصص' },
+  { id: 'kitchenette', labelEn: 'Customized Kitchenette', labelAr: 'مطبخ صغير مخصص' },
+  { id: 'stairs', labelEn: 'Customized Wood Clad Steel Stairs', labelAr: 'درج حديد مكسو بالخشب' },
+  { id: 'wall-cladding', labelEn: 'Customized Wall Cladding', labelAr: 'تكسية جدران مخصصة' },
+  { id: 'dressing-unit', labelEn: 'Customized Dressing Unit', labelAr: 'وحدة تسريحة مخصصة' },
+  { id: 'tv-unit', labelEn: 'Customized TV Unit', labelAr: 'وحدة تلفزيون مخصصة' },
+  { id: 'storage', labelEn: 'Customized Storage Units', labelAr: 'وحدات تخزين مخصصة' },
+  { id: 'islands', labelEn: 'Customized Islands', labelAr: 'جزر مخصصة' },
+  { id: 'coffee-units', labelEn: 'Customized Coffee Units', labelAr: 'وحدات قهوة مخصصة' },
+  { id: 'buffets', labelEn: 'Customized Buffets', labelAr: 'بوفيهات مخصصة' },
+  { id: 'libraries', labelEn: 'Customized Libraries', labelAr: 'مكتبات مخصصة' },
 ];
 
-export const projectScopes = [
-  { id: 'full-project', labelEn: 'Full Project / Major', labelAr: 'مشاريع كبيرة' },
-  { id: 'renovation', labelEn: 'Renovation', labelAr: 'ترميم' },
-  { id: 'specific-unit', labelEn: 'Specific Unit', labelAr: 'وحدة محددة' },
-  { id: 'doors-only', labelEn: 'Doors Only', labelAr: 'أبواب فقط' },
+// Time slots for site visit booking
+export const timeSlots = [
+  { id: '7-9', labelEn: '7:00 - 9:00', labelAr: '7:00 - 9:00' },
+  { id: '10-12', labelEn: '10:00 - 12:00', labelAr: '10:00 - 12:00' },
+  { id: '13-15', labelEn: '13:00 - 15:00', labelAr: '13:00 - 15:00' },
+  { id: '16-18', labelEn: '16:00 - 18:00', labelAr: '16:00 - 18:00' },
 ];
 
-export const urgencyLevels = [
+// Project priority levels
+export const projectPriorities = [
   { id: 'urgent', labelEn: 'Urgent', labelAr: 'عاجل' },
-  { id: 'soon', labelEn: 'Soon', labelAr: 'قريباً' },
-  { id: 'planning', labelEn: 'Planning', labelAr: 'تخطيط' },
-  { id: 'exploring', labelEn: 'Just Exploring', labelAr: 'استكشاف فقط' },
+  { id: 'standard', labelEn: 'Standard', labelAr: 'قياسي' },
+  { id: 'not-urgent', labelEn: 'Not Urgent', labelAr: 'غير عاجل' },
+  { id: 'future', labelEn: 'Future Project', labelAr: 'مشروع مستقبلي' },
+];
+
+// Project value estimates
+export const projectValues = [
+  { id: 'high', labelEn: 'High', labelAr: 'عالي' },
+  { id: 'medium', labelEn: 'Medium', labelAr: 'متوسط' },
+  { id: 'low', labelEn: 'Low', labelAr: 'منخفض' },
+];
+
+// Pre-sales status
+export const preSalesStatuses = [
+  { id: 'contacted', labelEn: 'Contacted', labelAr: 'تم التواصل' },
+  { id: 'not-contacted', labelEn: 'Not Contacted', labelAr: 'لم يتم التواصل' },
+  { id: 'no-response', labelEn: 'No Response', labelAr: 'لا رد' },
+];
+
+// Design requirement options
+export const designOptions = [
+  { id: 'required', labelEn: 'Required', labelAr: 'مطلوب' },
+  { id: 'available', labelEn: 'Available', labelAr: 'متوفر' },
 ];

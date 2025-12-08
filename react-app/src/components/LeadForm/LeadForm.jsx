@@ -1,11 +1,13 @@
 import { useLanguage } from '../../context/LanguageContext';
 import { useLeadForm } from '../../hooks/useLeadForm';
 import { PersonalDetails } from './PersonalDetails';
-import { ProjectScope } from './ProjectScope';
-import { ServiceSelector } from './ServiceSelector';
-import { UrgencySelector } from './SalesmanMode';
+import { DesignRequirements } from './DesignRequirements';
+import { ScopeSelector } from './ScopeSelector';
+import { SiteVisitBooking } from './SiteVisitBooking';
+import { ProjectAssessment } from './ProjectAssessment';
+import { projectPriorities, projectValues, preSalesStatuses, timeSlots } from '../../data/services';
 
-// FormSubmit AJAX endpoint (no redirect needed)
+// FormSubmit AJAX endpoint
 const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/moayad@qualiasolutions.net';
 
 // Google Apps Script Web App URL for saving leads to Google Sheets
@@ -16,13 +18,18 @@ export function LeadForm() {
   const {
     state,
     setField,
-    toggleService,
-    setServiceOption,
+    toggleScopeItem,
     validate,
-    formatServicesForEmail,
+    formatScopeForEmail,
     resetForm,
     dispatch,
   } = useLeadForm();
+
+  // Helper to get label from ID
+  const getLabelById = (items, id) => {
+    const item = items.find((i) => i.id === id);
+    return item ? item.labelEn : id || 'Not specified';
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +37,22 @@ export function LeadForm() {
       return;
     }
 
-    const servicesText = formatServicesForEmail();
+    const scopeText = formatScopeForEmail();
+    const fullName = `${state.firstName} ${state.secondName}`.trim();
+
+    // Format design requirements
+    const archDesignText = state.archDesign
+      ? `${state.archDesign === 'required' ? 'Required' : 'Available'}${state.archDesignAutocad ? ' (AutoCAD Available)' : ''}`
+      : 'Not specified';
+    const interiorDesignText = state.interiorDesign
+      ? state.interiorDesign === 'required' ? 'Required' : 'Available'
+      : 'Not specified';
+
+    // Format site visit
+    const timeSlotText = getLabelById(timeSlots, state.visitTimeSlot);
+    const siteVisitText = state.visitDate
+      ? `${state.visitDate} (${timeSlotText})`
+      : 'Not scheduled';
 
     // Send to both Google Sheets and FormSubmit in parallel
     try {
@@ -40,26 +62,37 @@ export function LeadForm() {
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: state.name,
+          firstName: state.firstName,
+          secondName: state.secondName,
+          fullName: fullName,
           phone: state.phone,
-          email: state.email,
-          area: state.area,
-          projectScope: state.projectScope || 'Not specified',
-          urgency: state.urgency || 'Not specified',
-          services: servicesText,
+          city: state.city || 'Not specified',
+          archDesign: archDesignText,
+          interiorDesign: interiorDesignText,
+          scope: scopeText,
+          visitDate: state.visitDate || 'Not scheduled',
+          visitTimeSlot: timeSlotText,
+          projectPriority: getLabelById(projectPriorities, state.projectPriority),
+          projectValue: getLabelById(projectValues, state.projectValue),
+          preSalesStatus: getLabelById(preSalesStatuses, state.preSalesStatus),
         }),
       });
 
-      // FormSubmit - use FormData (more reliable than JSON)
+      // FormSubmit - use FormData
       const formData = new FormData();
-      formData.append('name', state.name);
-      formData.append('phone', state.phone);
-      formData.append('email', state.email);
-      formData.append('area', state.area);
-      formData.append('Project Scope', state.projectScope || 'Not specified');
-      formData.append('Project Urgency', state.urgency || 'Not specified');
-      formData.append('Services', servicesText);
-      formData.append('_subject', 'New Inquiry - Mirzaam Expo 2025');
+      formData.append('Name', fullName);
+      formData.append('First Name', state.firstName);
+      formData.append('Second Name', state.secondName);
+      formData.append('Phone', state.phone);
+      formData.append('City', state.city || 'Not specified');
+      formData.append('Architecture Design', archDesignText);
+      formData.append('Interior Design', interiorDesignText);
+      formData.append('Scope Required', scopeText);
+      formData.append('Site Visit', siteVisitText);
+      formData.append('Project Priority', getLabelById(projectPriorities, state.projectPriority));
+      formData.append('Project Value', getLabelById(projectValues, state.projectValue));
+      formData.append('Pre-Sales Status', getLabelById(preSalesStatuses, state.preSalesStatus));
+      formData.append('_subject', 'New Lead - Mirzaam Expo 2025');
       formData.append('_captcha', 'false');
       formData.append('_template', 'table');
 
@@ -102,32 +135,26 @@ export function LeadForm() {
 
   return (
     <form onSubmit={handleSubmit}>
+      {/* Section 1: Contact Details */}
       <PersonalDetails state={state} setField={setField} />
 
-      <div style={{ marginTop: '12px' }}>
-        <ProjectScope
-          value={state.projectScope}
-          onChange={(value) => setField('projectScope', value)}
-        />
-      </div>
+      {/* Section 2: Design Requirements */}
+      <DesignRequirements state={state} setField={setField} />
 
-      <div style={{ marginTop: '12px' }}>
-        <ServiceSelector
-          selectedServices={state.services}
-          onToggleService={toggleService}
-          onOptionChange={setServiceOption}
-        />
-      </div>
+      {/* Section 3: Scope Required */}
+      <ScopeSelector
+        selectedItems={state.scopeItems}
+        onToggle={toggleScopeItem}
+      />
 
-      <div style={{ marginTop: '12px' }}>
-        <UrgencySelector
-          value={state.urgency}
-          onChange={(value) => setField('urgency', value)}
-        />
-      </div>
+      {/* Section 4: Site Visit Booking */}
+      <SiteVisitBooking state={state} setField={setField} />
+
+      {/* Section 5: Project Assessment */}
+      <ProjectAssessment state={state} setField={setField} />
 
       <button type="submit" className="btn">
-        <span className="btn-text">{t('Send Request', 'إرسال الطلب')}</span>
+        <span className="btn-text">{t('Save Lead Form', 'حفظ نموذج العميل')}</span>
         <svg className="btn-icon" viewBox="0 0 24 24">
           <path d="M5 12h14M12 5l7 7-7 7" />
         </svg>

@@ -1,21 +1,31 @@
 import { useReducer, useEffect, useCallback } from 'react';
-import { services } from '../data/services';
+import { scopeItems } from '../data/services';
 
 const STORAGE_KEY = 'woodLocationForm';
 
 const initialState = {
-  // Personal Details
-  name: '',
+  // Contact Details
+  firstName: '',
+  secondName: '',
   phone: '',
-  email: '',
-  area: '',
+  city: '',
 
-  // Project
-  projectScope: '',
-  urgency: '',
+  // Design Requirements
+  archDesign: '',
+  archDesignAutocad: false,
+  interiorDesign: '',
 
-  // Services (keyed by service id)
-  services: {},
+  // Scope (keyed by scope item id)
+  scopeItems: {},
+
+  // Site Visit
+  visitDate: '',
+  visitTimeSlot: '',
+
+  // Project Assessment
+  projectPriority: '',
+  projectValue: '',
+  preSalesStatus: '',
 
   // Form State
   isSubmitting: false,
@@ -32,43 +42,14 @@ function formReducer(state, action) {
         errors: { ...state.errors, [action.field]: null },
       };
 
-    case 'SET_SERVICE':
+    case 'TOGGLE_SCOPE_ITEM':
       return {
         ...state,
-        services: {
-          ...state.services,
-          [action.serviceId]: action.value,
+        scopeItems: {
+          ...state.scopeItems,
+          [action.itemId]: !state.scopeItems[action.itemId],
         },
       };
-
-    case 'SET_SERVICE_OPTION':
-      return {
-        ...state,
-        services: {
-          ...state.services,
-          [action.serviceId]: {
-            ...state.services[action.serviceId],
-            [action.optionId]: action.value,
-          },
-        },
-      };
-
-    case 'TOGGLE_SERVICE':
-      const currentService = state.services[action.serviceId];
-      if (currentService?.selected) {
-        // Deselect - remove service
-        const { [action.serviceId]: _, ...rest } = state.services;
-        return { ...state, services: rest };
-      } else {
-        // Select - add service with selected flag
-        return {
-          ...state,
-          services: {
-            ...state.services,
-            [action.serviceId]: { selected: true },
-          },
-        };
-      }
 
     case 'SET_ERRORS':
       return { ...state, errors: action.errors };
@@ -121,13 +102,19 @@ export function useLeadForm() {
   useEffect(() => {
     if (!state.isSubmitting && !state.isSubmitted) {
       const dataToSave = {
-        name: state.name,
+        firstName: state.firstName,
+        secondName: state.secondName,
         phone: state.phone,
-        email: state.email,
-        area: state.area,
-        projectScope: state.projectScope,
-        urgency: state.urgency,
-        services: state.services,
+        city: state.city,
+        archDesign: state.archDesign,
+        archDesignAutocad: state.archDesignAutocad,
+        interiorDesign: state.interiorDesign,
+        scopeItems: state.scopeItems,
+        visitDate: state.visitDate,
+        visitTimeSlot: state.visitTimeSlot,
+        projectPriority: state.projectPriority,
+        projectValue: state.projectValue,
+        preSalesStatus: state.preSalesStatus,
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
     }
@@ -137,19 +124,19 @@ export function useLeadForm() {
     dispatch({ type: 'SET_FIELD', field, value });
   }, []);
 
-  const toggleService = useCallback((serviceId) => {
-    dispatch({ type: 'TOGGLE_SERVICE', serviceId });
-  }, []);
-
-  const setServiceOption = useCallback((serviceId, optionId, value) => {
-    dispatch({ type: 'SET_SERVICE_OPTION', serviceId, optionId, value });
+  const toggleScopeItem = useCallback((itemId) => {
+    dispatch({ type: 'TOGGLE_SCOPE_ITEM', itemId });
   }, []);
 
   const validate = useCallback(() => {
     const errors = {};
 
-    if (!state.name.trim()) {
-      errors.name = 'Name is required';
+    if (!state.firstName.trim()) {
+      errors.firstName = 'First name is required';
+    }
+
+    if (!state.secondName.trim()) {
+      errors.secondName = 'Second name is required';
     }
 
     if (!state.phone.trim()) {
@@ -161,55 +148,21 @@ export function useLeadForm() {
       }
     }
 
-    if (!state.email.trim()) {
-      errors.email = 'Email is required';
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(state.email)) {
-        errors.email = 'Invalid email format';
-      }
-    }
-
-    if (!state.area) {
-      errors.area = 'Area is required';
-    }
-
     dispatch({ type: 'SET_ERRORS', errors });
     return Object.keys(errors).length === 0;
-  }, [state.name, state.phone, state.email, state.area]);
+  }, [state.firstName, state.secondName, state.phone]);
 
-  const formatServicesForEmail = useCallback(() => {
-    const selectedServices = Object.entries(state.services)
-      .filter(([_, data]) => data?.selected)
-      .map(([serviceId, data]) => {
-        const service = services.find((s) => s.id === serviceId);
-        if (!service) return null;
-
-        let details = service.nameEn;
-        const options = [];
-
-        // Collect selected options
-        Object.entries(data).forEach(([key, value]) => {
-          if (key === 'selected' || key === 'sqm') return;
-          if (value) {
-            options.push(`${key}: ${value}`);
-          }
-        });
-
-        if (data.sqm) {
-          options.push(`Area: ${data.sqm} sqm`);
-        }
-
-        if (options.length > 0) {
-          details += ` (${options.join(', ')})`;
-        }
-
-        return details;
+  const formatScopeForEmail = useCallback(() => {
+    const selectedItems = Object.entries(state.scopeItems)
+      .filter(([, isSelected]) => isSelected)
+      .map(([itemId]) => {
+        const item = scopeItems.find((s) => s.id === itemId);
+        return item ? item.labelEn : itemId;
       })
       .filter(Boolean);
 
-    return selectedServices.join('\n') || 'No services selected';
-  }, [state.services]);
+    return selectedItems.join(', ') || 'No items selected';
+  }, [state.scopeItems]);
 
   const resetForm = useCallback(() => {
     dispatch({ type: 'RESET' });
@@ -220,11 +173,10 @@ export function useLeadForm() {
     state,
     dispatch,
     setField,
-    toggleService,
-    setServiceOption,
+    toggleScopeItem,
     validate,
     resetForm,
-    formatServicesForEmail,
+    formatScopeForEmail,
   };
 }
 
