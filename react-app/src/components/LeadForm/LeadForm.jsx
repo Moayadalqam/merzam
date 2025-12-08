@@ -57,13 +57,12 @@ export function LeadForm() {
     // Send to both Google Sheets and FormSubmit in parallel
     try {
       // Google Sheets request (fire and forget)
+      // Order: timestamp (added by script), fullName, phone, city, archDesign, interiorDesign, scope, visitDate, visitTimeSlot, projectPriority, projectValue, preSalesStatus
       fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          firstName: state.firstName,
-          secondName: state.secondName,
           fullName: fullName,
           phone: state.phone,
           city: state.city || 'Not specified',
@@ -72,7 +71,6 @@ export function LeadForm() {
           scope: scopeText,
           visitDate: state.visitDate || '',
           visitTimeSlot: timeSlotText,
-          // Project Assessment fields
           projectPriority: getLabelById(projectPriorities, state.projectPriority) || 'Not specified',
           projectValue: getLabelById(projectValues, state.projectValue) || 'Not specified',
           preSalesStatus: 'Not Contacted',
