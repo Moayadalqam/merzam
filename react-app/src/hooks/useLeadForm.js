@@ -22,11 +22,6 @@ const initialState = {
   visitDate: '',
   visitTimeSlot: '',
 
-  // Project Assessment
-  projectPriority: '',
-  projectValue: '',
-  preSalesStatus: '',
-
   // Form State
   isSubmitting: false,
   isSubmitted: false,
@@ -112,9 +107,6 @@ export function useLeadForm() {
         scopeItems: state.scopeItems,
         visitDate: state.visitDate,
         visitTimeSlot: state.visitTimeSlot,
-        projectPriority: state.projectPriority,
-        projectValue: state.projectValue,
-        preSalesStatus: state.preSalesStatus,
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
     }

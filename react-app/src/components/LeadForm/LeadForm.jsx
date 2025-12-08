@@ -4,8 +4,7 @@ import { PersonalDetails } from './PersonalDetails';
 import { DesignRequirements } from './DesignRequirements';
 import { ScopeSelector } from './ScopeSelector';
 import { SiteVisitBooking } from './SiteVisitBooking';
-import { ProjectAssessment } from './ProjectAssessment';
-import { projectPriorities, projectValues, preSalesStatuses, timeSlots } from '../../data/services';
+import { timeSlots } from '../../data/services';
 
 // FormSubmit AJAX endpoint
 const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/moayad@qualiasolutions.net';
@@ -28,7 +27,7 @@ export function LeadForm() {
   // Helper to get label from ID
   const getLabelById = (items, id) => {
     const item = items.find((i) => i.id === id);
-    return item ? item.labelEn : id || 'Not specified';
+    return item ? item.labelEn : 'Not specified';
   };
 
   const handleSubmit = async (e) => {
@@ -70,15 +69,16 @@ export function LeadForm() {
           archDesign: archDesignText,
           interiorDesign: interiorDesignText,
           scope: scopeText,
-          visitDate: state.visitDate || 'Not scheduled',
+          visitDate: state.visitDate || '',
           visitTimeSlot: timeSlotText,
-          projectPriority: getLabelById(projectPriorities, state.projectPriority),
-          projectValue: getLabelById(projectValues, state.projectValue),
-          preSalesStatus: getLabelById(preSalesStatuses, state.preSalesStatus),
+          // Internal fields - defaults for Google Sheets
+          projectPriority: 'Standard',
+          projectValue: 'Medium',
+          preSalesStatus: 'Not Contacted',
         }),
       });
 
-      // FormSubmit - use FormData
+      // FormSubmit - use FormData (email notification only, no internal fields)
       const formData = new FormData();
       formData.append('Name', fullName);
       formData.append('First Name', state.firstName);
@@ -89,9 +89,6 @@ export function LeadForm() {
       formData.append('Interior Design', interiorDesignText);
       formData.append('Scope Required', scopeText);
       formData.append('Site Visit', siteVisitText);
-      formData.append('Project Priority', getLabelById(projectPriorities, state.projectPriority));
-      formData.append('Project Value', getLabelById(projectValues, state.projectValue));
-      formData.append('Pre-Sales Status', getLabelById(preSalesStatuses, state.preSalesStatus));
       formData.append('_subject', 'New Lead - Mirzaam Expo 2025');
       formData.append('_captcha', 'false');
       formData.append('_template', 'table');
@@ -149,9 +146,6 @@ export function LeadForm() {
 
       {/* Section 4: Site Visit Booking */}
       <SiteVisitBooking state={state} setField={setField} />
-
-      {/* Section 5: Project Assessment */}
-      <ProjectAssessment state={state} setField={setField} />
 
       <button type="submit" className="btn">
         <span className="btn-text">{t('Save Lead Form', 'حفظ نموذج العميل')}</span>
