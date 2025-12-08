@@ -1209,12 +1209,111 @@ select option {
   color: var(--cream);
 }
 
-/* AutoCAD Checkbox - Indented */
-.autocad-option {
-  margin-top: 8px;
-  margin-inline-start: 20px;
-  background: rgba(161, 98, 45, 0.05);
+/* Design Question Layout */
+.design-question {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
+}
+
+.design-question:last-child {
+  margin-bottom: 0;
+}
+
+.question-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 12px;
+}
+
+/* Toggle Button Options */
+.toggle-options {
+  display: flex;
+  gap: 8px;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 10px 16px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn:hover {
+  border-color: var(--gold);
+  color: var(--cream);
+}
+
+.toggle-btn.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--bg);
+}
+
+/* AutoCAD Checkbox */
+.autocad-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: rgba(161, 98, 45, 0.08);
+  border: 1px solid rgba(161, 98, 45, 0.3);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.autocad-checkbox:hover {
+  background: rgba(161, 98, 45, 0.12);
+}
+
+.autocad-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.autocad-checkbox .checkbox-mark {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.autocad-checkbox input[type="checkbox"]:checked + .checkbox-mark {
+  background: var(--gold);
+}
+
+.autocad-checkbox input[type="checkbox"]:checked + .checkbox-mark::after {
+  content: '';
+  width: 5px;
+  height: 9px;
+  border: solid var(--card);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-bottom: 2px;
+}
+
+.autocad-checkbox .checkbox-label {
+  font-size: 13px;
+  color: var(--gold-light);
 }
 
 /* Scope Grid - Checkboxes */
