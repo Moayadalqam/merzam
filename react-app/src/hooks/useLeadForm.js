@@ -7,6 +7,7 @@ const initialState = {
   // Contact Details
   firstName: '',
   secondName: '',
+  countryCode: '+965',
   phone: '',
   city: '',
 
@@ -103,6 +104,7 @@ export function useLeadForm() {
       const dataToSave = {
         firstName: state.firstName,
         secondName: state.secondName,
+        countryCode: state.countryCode,
         phone: state.phone,
         city: state.city,
         archDesign: state.archDesign,

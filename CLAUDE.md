@@ -4,85 +4,102 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A mobile-first lead form for Wood Location's exhibition booth at Mirzaam 2025. React (Vite) app with bilingual AR/EN support and dual form submission (FormSubmit + Google Sheets).
+Mobile-first lead form for Wood Location's Mirzaam 2025 exhibition booth. React 19 + Vite with bilingual AR/EN support.
 
-**Live URL:** https://merzamnewbarcode.vercel.app
+**Live:** https://merzamnewbarcode.vercel.app
 
-## Development Commands
+## Development
 
 ```bash
 cd react-app
 npm install
 npm run dev      # http://localhost:5173
 npm run build    # Output to dist/
-npm run lint     # ESLint check
 npm run preview  # Preview production build
+npm run lint     # ESLint check
 ```
 
 ## Architecture
 
-### React App (`react-app/src/`)
+```
+react-app/src/
+├── App.jsx                    # Hash routing (#qr or empty), loading screen
+├── main.jsx                   # React entry point
+├── context/LanguageContext.jsx # AR/EN with RTL, t(en, ar) helper
+├── hooks/useLeadForm.js       # useReducer state, localStorage persistence
+├── utils/phoneFormatter.js    # Phone number formatting utility
+├── data/
+│   ├── services.js            # Scope items, time slots, priorities, design options
+│   └── kuwaitAreas.js         # Kuwait city list
+└── components/
+    ├── LeadForm/
+    │   ├── LeadForm.jsx       # Main form (orchestrates sub-components)
+    │   ├── PersonalDetails.jsx   # Name, phone, city
+    │   ├── DesignRequirements.jsx # Arch/interior design needs
+    │   ├── ScopeSelector.jsx     # Checkbox grid for work items
+    │   ├── SiteVisitBooking.jsx  # Date/time slot selection
+    │   └── ProjectAssessment.jsx # Priority/value dropdowns
+    ├── LanguageToggle/        # AR/EN switcher
+    ├── LoadingScreen/         # Initial loading animation
+    └── QRGenerator/           # QR code generation (via #qr hash)
+```
 
-- **App.jsx** - Hash-based routing (`#qr` for QR generator, empty for form), loading screen state
-- **context/LanguageContext.jsx** - AR/EN toggle with RTL support. Uses `t(en, ar)` helper for translations
-- **hooks/useLeadForm.js** - Form state via `useReducer`, localStorage persistence, validation
-- **data/services.js** - Scope items (18 checkboxes), time slots, priorities, values, statuses
-- **data/kuwaitAreas.js** - Flat alphabetical list of Kuwait cities
+### Translation Pattern
 
-### Form Sections
+All text uses the `t(en, ar)` helper from `useLanguage()`:
+```jsx
+const { t } = useLanguage();
+<label>{t('First Name', 'الاسم الأول')}</label>
+```
 
-1. **Contact Details** - First name, second name, phone, city (no email)
-2. **Design Requirements** - Architecture design (Required/Available + AutoCAD checkbox), Interior design
-3. **Scope Required** - 18 simple checkboxes for customized items
-4. **Site Visit Booking** - Date picker + time slot dropdown
-5. **Project Assessment** - Priority, Value, Pre-Sales Status
+### Dual Form Submission
 
-### Form Components (`components/LeadForm/`)
+`LeadForm.jsx` submits to both endpoints in parallel:
+1. **Google Sheets** - `no-cors` fire-and-forget POST to Apps Script (line 14)
+2. **FormSubmit.co** - AJAX POST for email notification (line 11)
 
-- `PersonalDetails.jsx` - Contact info fields
-- `DesignRequirements.jsx` - Architecture/Interior design radio groups
-- `ScopeSelector.jsx` - Grid of scope item checkboxes
-- `SiteVisitBooking.jsx` - Date and time slot fields
-- `ProjectAssessment.jsx` - Priority, value, status fields
-- `LeadForm.jsx` - Main form orchestrating all sections
+Required fields: firstName, secondName, phone. Validation in `useLeadForm.js:131`.
 
-### Form State Structure
+### Form State
+
+Managed by `useReducer` in `useLeadForm.js`. Auto-saves to localStorage key `woodLocationForm`.
 
 ```js
 {
-  firstName: '', secondName: '', phone: '', city: '',
-  archDesign: '', archDesignAutocad: false, interiorDesign: '',
+  firstName, secondName, countryCode, phone, city,
+  archDesign, archDesignAutocad, interiorDesign,
   scopeItems: { [itemId]: boolean },
-  visitDate: '', visitTimeSlot: '',
-  projectPriority: '', projectValue: '', preSalesStatus: ''
+  visitDate, visitTimeSlot,
+  projectPriority, projectValue,
+  isSubmitting, isSubmitted, errors
 }
 ```
 
-### Form Submission Flow
+### Adding New Form Fields
 
-Dual AJAX submission (in `LeadForm.jsx`):
-1. Validates firstName, secondName, phone (required)
-2. Sends to Google Sheets (fire-and-forget, `no-cors` mode)
-3. Sends to FormSubmit.co AJAX endpoint (uses FormData)
-4. On success, clears localStorage and shows success state
+1. Add to `initialState` in `useLeadForm.js:6`
+2. Add to `dataToSave` in auto-save effect (`useLeadForm.js:104`)
+3. Create/update component in `components/LeadForm/`
+4. Add to submission payload in `LeadForm.jsx` (both Google Sheets + FormSubmit)
+5. Update Google Apps Script to accept new column
 
-**Endpoints:**
-- FormSubmit: `https://formsubmit.co/ajax/moayad@qualiasolutions.net`
-- Google Sheets: Apps Script Web App URL in `LeadForm.jsx:14`
+### Adding New Scope Items
 
-### Legacy Site (root)
-
-Deprecated HTML/CSS/JS files kept for reference: `index.html`, `styles.css`, `script.js`
+Add to `scopeItems` array in `data/services.js` with `{ id, labelEn, labelAr }`.
 
 ## Brand Colors
 
 ```css
 --gold: #a1622d;       /* Primary accent */
 --bg: #0a0a0a;         /* Background */
---card: #141414;       /* Card background */
+--card: #141414;       /* Cards */
 --cream: #f8f5f0;      /* Light text */
 ```
 
 ## Deployment
 
-Vercel auto-deploys from `main` branch. Manual: `vercel --prod`
+Vercel auto-deploys from `main`. Manual: `vercel --prod`
+
+## Legacy Files
+
+Root HTML/CSS/JS files (`index.html`, `styles.css`, `script.js`) are deprecated - use React app only.

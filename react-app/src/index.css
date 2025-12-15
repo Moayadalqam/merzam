@@ -1383,6 +1383,36 @@ select option {
   margin-bottom: 2px;
 }
 
+/* Phone Input Group */
+.phone-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.country-code-select {
+  flex-shrink: 0;
+  width: 100px;
+}
+
+.country-code-select select {
+  padding: 10px 28px 10px 8px;
+  font-size: 14px;
+}
+
+.phone-number-input {
+  flex: 1;
+}
+
+@media (max-width: 480px) {
+  .phone-input-group {
+    flex-direction: row;
+  }
+
+  .country-code-select {
+    width: 95px;
+  }
+}
+
 /* Date Input Styling */
 .field input[type="date"] {
   color-scheme: dark;

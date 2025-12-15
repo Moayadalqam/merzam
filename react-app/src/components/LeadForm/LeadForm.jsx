@@ -11,7 +11,7 @@ import { timeSlots, projectPriorities, projectValues } from '../../data/services
 const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/moayad@qualiasolutions.net';
 
 // Google Apps Script Web App URL for saving leads to Google Sheets
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwhoguFtJTTi4m4tmaIMnqEOqwKVDhQ5fS-G99qCcO5YkVaPBqfEpYl7QzQQTeqDEUozQ/exec';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxQuDLDPxtrvJWqOmPSR3j2e-UlETPO8T7YLp9WfgaymcK1F6y7TCoDhxFm5pc27MblCg/exec';
 
 export function LeadForm() {
   const { t } = useLanguage();
@@ -39,6 +39,7 @@ export function LeadForm() {
 
     const scopeText = formatScopeForEmail();
     const fullName = `${state.firstName} ${state.secondName}`.trim();
+    const fullPhone = `${state.countryCode} ${state.phone}`.trim();
 
     // Format design requirements
     const archDesignText = state.archDesign
@@ -64,7 +65,7 @@ export function LeadForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fullName: fullName,
-          phone: state.phone,
+          phone: fullPhone,
           city: state.city || 'Not specified',
           archDesign: archDesignText,
           interiorDesign: interiorDesignText,
@@ -82,7 +83,7 @@ export function LeadForm() {
       formData.append('Name', fullName);
       formData.append('First Name', state.firstName);
       formData.append('Second Name', state.secondName);
-      formData.append('Phone', state.phone);
+      formData.append('Phone', fullPhone);
       formData.append('City', state.city || 'Not specified');
       formData.append('Architecture Design', archDesignText);
       formData.append('Interior Design', interiorDesignText);

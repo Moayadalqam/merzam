@@ -18,6 +18,11 @@ export const scopeItems = [
   { id: 'coffee-units', labelEn: 'Coffee Units', labelAr: 'وحدات قهوة' },
   { id: 'buffets', labelEn: 'Buffets', labelAr: 'بوفيهات' },
   { id: 'libraries', labelEn: 'Libraries', labelAr: 'مكتبات' },
+  { id: 'dining-table', labelEn: 'Dining Table', labelAr: 'طاولة طعام' },
+  { id: 'coffee-table', labelEn: 'Coffee Table', labelAr: 'طاولة قهوة' },
+  { id: 'corner-table', labelEn: 'Corner Table', labelAr: 'طاولة زاوية' },
+  { id: 'diwaniya', labelEn: 'Diwaniya', labelAr: 'ديوانية' },
+  { id: 'living-room', labelEn: 'Living Room', labelAr: 'غرفة معيشة' },
 ];
 
 // Time slots for site visit booking
