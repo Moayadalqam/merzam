@@ -88,11 +88,11 @@ Managed by `useReducer` in `useLeadForm.js`. Auto-saves to localStorage key `woo
 
 ### Adding New Form Fields
 
-1. Add to `initialState` in `useLeadForm.js:6`
-2. Add to `dataToSave` in auto-save effect (`useLeadForm.js:104`)
+1. Add to `initialState` object in `useLeadForm.js`
+2. Add to `dataToSave` in the auto-save useEffect in `useLeadForm.js`
 3. Create/update component in `components/LeadForm/`
 4. Add to submission payload in `LeadForm.jsx` (both Google Sheets + FormSubmit)
-5. Update Google Apps Script to accept new column
+5. Update Google Apps Script (`google-apps-script.js`) to accept new column
 
 ### Adding New Scope Items
 
@@ -100,9 +100,11 @@ Add to `scopeItems` array in `data/services.js` with `{ id, labelEn, labelAr }`.
 
 ### Appointments System
 
-Standalone booking at `#book`. See `APPOINTMENTS_SETUP.md` for Google Apps Script setup.
+Standalone booking at `#book`. Features: Site visit / office meeting types, 30-day date range, 9 AM - 5 PM hourly slots, double-booking prevention.
 
-Features: Site visit / office meeting types, 30-day date range, 9 AM - 5 PM hourly slots, double-booking prevention.
+### Google Apps Script
+
+`google-apps-script.js` in root contains the backend code for Google Sheets integration. Deploy this as a Google Apps Script web app to receive form submissions.
 
 ## Brand Colors
 

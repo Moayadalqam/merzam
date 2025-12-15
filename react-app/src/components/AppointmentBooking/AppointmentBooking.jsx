@@ -3,8 +3,8 @@ import { useLanguage } from '../../context/LanguageContext';
 import { kuwaitCities } from '../../data/kuwaitAreas';
 import './AppointmentBooking.css';
 
-// Google Apps Script Web App URL for appointments
-const APPOINTMENTS_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwAppointments/exec';
+// Google Apps Script Web App URL (same as LeadForm - unified endpoint)
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzdtjd0AtWJe-9kgkdwTAN0uvB5fTd2-FRI8kFVz7Yj0dpcn0XC8zjEmVA_8lvGGb4AaA/exec';
 
 // FormSubmit for email confirmation
 const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/moayad@qualiasolutions.net';
@@ -69,8 +69,28 @@ export function AppointmentBooking() {
 
   const fetchBookedSlots = async (date) => {
     try {
-      // For now, we'll use localStorage to track booked slots
-      // In production, this would fetch from Google Sheets
+      // Fetch booked slots from Google Sheets
+      const response = await fetch(`${GOOGLE_SHEET_URL}?action=bookedSlots&date=${date}`);
+      const result = await response.json();
+
+      if (result.success && result.bookedSlots) {
+        setBookedSlots(result.bookedSlots);
+      } else {
+        // Fallback to localStorage if API fails
+        const stored = localStorage.getItem('woodLocationAppointments');
+        if (stored) {
+          const appointments = JSON.parse(stored);
+          const slotsForDate = appointments
+            .filter(apt => apt.date === date)
+            .map(apt => apt.timeSlot);
+          setBookedSlots(slotsForDate);
+        } else {
+          setBookedSlots([]);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching booked slots:', error);
+      // Fallback to localStorage on network error
       const stored = localStorage.getItem('woodLocationAppointments');
       if (stored) {
         const appointments = JSON.parse(stored);
@@ -81,9 +101,6 @@ export function AppointmentBooking() {
       } else {
         setBookedSlots([]);
       }
-    } catch (error) {
-      console.error('Error fetching booked slots:', error);
-      setBookedSlots([]);
     }
   };
 
@@ -203,11 +220,12 @@ export function AppointmentBooking() {
       localStorage.setItem('woodLocationAppointments', JSON.stringify(appointments));
 
       // Send to Google Sheets (fire and forget)
-      fetch(APPOINTMENTS_SHEET_URL, {
+      fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          type: 'booking', // Route to booking handler
           firstName: formData.firstName,
           lastName: formData.lastName,
           fullName: fullName,
@@ -217,7 +235,7 @@ export function AppointmentBooking() {
           siteContactNumber: siteContactFull,
           meetingType: meetingTypeLabel,
           date: formData.date,
-          timeSlot: timeSlotLabel,
+          timeSlot: formData.timeSlot, // Send the ID (e.g., '10:00') for slot matching
         }),
       });
 

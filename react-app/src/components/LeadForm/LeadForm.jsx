@@ -11,7 +11,7 @@ import { timeSlots, projectPriorities, projectValues } from '../../data/services
 const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/moayad@qualiasolutions.net';
 
 // Google Apps Script Web App URL for saving leads to Google Sheets
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxQuDLDPxtrvJWqOmPSR3j2e-UlETPO8T7YLp9WfgaymcK1F6y7TCoDhxFm5pc27MblCg/exec';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzdtjd0AtWJe-9kgkdwTAN0uvB5fTd2-FRI8kFVz7Yj0dpcn0XC8zjEmVA_8lvGGb4AaA/exec';
 
 export function LeadForm() {
   const { t } = useLanguage();
