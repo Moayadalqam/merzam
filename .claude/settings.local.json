@@ -13,7 +13,9 @@
       "Bash(vercel ls:*)",
       "Bash(vercel alias:*)",
       "Bash(vercel projects:*)",
-      "Bash(vercel link:*)"
+      "Bash(vercel link:*)",
+      "Bash(find:*)",
+      "Bash(claude mcp:*)"
     ]
   }
 }

@@ -4,9 +4,13 @@
 
 .booking-form {
   animation: fadeIn 0.3s ease;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .booking-form {
+    padding: 0;
+  }
 }
 
 /* Field Row - Side by side fields */
