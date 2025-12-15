@@ -154,6 +154,11 @@ function handleBookingSubmission(data) {
     // Create sheet if it doesn't exist
     if (!sheet) {
       sheet = ss.insertSheet(BOOKINGS_SHEET_NAME);
+    }
+
+    // Add headers if sheet is empty (row 1 is empty)
+    const firstCell = sheet.getRange(1, 1).getValue();
+    if (!firstCell || firstCell === '') {
       sheet.getRange(1, 1, 1, 12).setValues([[
         'Timestamp', 'First Name', 'Last Name', 'Full Name', 'Phone', 'Area',
         'Location', 'Site Contact', 'Meeting Type', 'Booking Date', 'Time Slot', 'Status'
@@ -321,4 +326,29 @@ function testGetBookedSlots() {
 
   const result = doGet(mockEvent);
   Logger.log(result.getContent());
+}
+
+/**
+ * Initialize Bookings sheet with headers - RUN THIS ONCE to set up the sheet
+ */
+function initializeBookingsSheet() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  let sheet = ss.getSheetByName(BOOKINGS_SHEET_NAME);
+
+  // Create sheet if it doesn't exist
+  if (!sheet) {
+    sheet = ss.insertSheet(BOOKINGS_SHEET_NAME);
+  }
+
+  // Clear existing content and set headers
+  sheet.clear();
+  sheet.getRange(1, 1, 1, 12).setValues([[
+    'Timestamp', 'First Name', 'Last Name', 'Full Name', 'Phone', 'Area',
+    'Location', 'Site Contact', 'Meeting Type', 'Booking Date', 'Time Slot', 'Status'
+  ]]);
+  sheet.getRange(1, 1, 1, 12).setFontWeight('bold').setBackground('#a1622d').setFontColor('#ffffff');
+  sheet.setFrozenRows(1);
+  sheet.autoResizeColumns(1, 12);
+
+  Logger.log('Bookings sheet initialized with headers');
 }
