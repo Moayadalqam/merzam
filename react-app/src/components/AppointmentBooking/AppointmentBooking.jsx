@@ -8,7 +8,7 @@ const APPOINTMENTS_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwAppoin
 // FormSubmit for email confirmation
 const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/moayad@qualiasolutions.net';
 
-// Available time slots
+// Available time slots (9 AM - 5 PM)
 const timeSlots = [
   { id: '09:00', labelEn: '9:00 AM', labelAr: '9:00 صباحاً' },
   { id: '10:00', labelEn: '10:00 AM', labelAr: '10:00 صباحاً' },
@@ -19,7 +19,6 @@ const timeSlots = [
   { id: '15:00', labelEn: '3:00 PM', labelAr: '3:00 مساءً' },
   { id: '16:00', labelEn: '4:00 PM', labelAr: '4:00 مساءً' },
   { id: '17:00', labelEn: '5:00 PM', labelAr: '5:00 مساءً' },
-  { id: '18:00', labelEn: '6:00 PM', labelAr: '6:00 مساءً' },
 ];
 
 // Meeting types
