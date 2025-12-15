@@ -1,0 +1,279 @@
+/* =============================================
+   Appointment Booking Styles
+   ============================================= */
+
+.booking-form {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Meeting Type Selection */
+.meeting-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.meeting-type-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.meeting-type-btn:hover {
+  border-color: var(--gold);
+  background: rgba(161, 98, 45, 0.08);
+}
+
+.meeting-type-btn.active {
+  border-color: var(--gold);
+  background: rgba(161, 98, 45, 0.15);
+}
+
+.type-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(161, 98, 45, 0.1);
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.meeting-type-btn.active .type-icon {
+  background: var(--gold);
+}
+
+.type-icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--gold);
+  transition: color 0.2s ease;
+}
+
+.meeting-type-btn.active .type-icon svg {
+  color: var(--bg);
+}
+
+.type-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cream);
+}
+
+/* Time Slots Grid */
+.time-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 480px) {
+  .time-slots-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 360px) {
+  .time-slots-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.time-slot-btn {
+  position: relative;
+  padding: 12px 8px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cream);
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.time-slot-btn:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: rgba(161, 98, 45, 0.1);
+}
+
+.time-slot-btn.selected {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--bg);
+}
+
+.time-slot-btn.booked {
+  opacity: 0.4;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.booked-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--error);
+  text-transform: uppercase;
+  margin-top: 4px;
+  text-decoration: none;
+}
+
+/* Error Text */
+.error-text {
+  display: block;
+  font-size: 12px;
+  color: var(--error);
+  margin-top: 6px;
+}
+
+/* Booking Success */
+.booking-success {
+  text-align: center;
+  padding: 20px;
+  animation: scaleIn 0.4s ease;
+}
+
+.booking-success .success-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--success), #22c55e);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  box-shadow: 0 8px 32px rgba(74, 222, 128, 0.3);
+}
+
+.booking-success .success-icon svg {
+  width: 40px;
+  height: 40px;
+  fill: none;
+  stroke: white;
+  stroke-width: 3;
+}
+
+.booking-success h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  color: var(--cream);
+  margin-bottom: 24px;
+}
+
+.booking-details {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--cream);
+}
+
+.success-message {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+/* WhatsApp Contact Banner */
+.whatsapp-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  margin-bottom: 16px;
+  transition: all 0.2s ease;
+}
+
+.whatsapp-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-banner svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+.whatsapp-banner span {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .meeting-type-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .meeting-type-btn {
+    flex-direction: row;
+    padding: 16px;
+  }
+
+  .type-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .type-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .booking-success h2 {
+    font-size: 22px;
+  }
+
+  .booking-success .success-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .booking-success .success-icon svg {
+    width: 32px;
+    height: 32px;
+  }
+}

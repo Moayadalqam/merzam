@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { LeadForm } from './components/LeadForm/LeadForm';
 import { QRGenerator } from './components/QRGenerator/QRGenerator';
+import { AppointmentBooking } from './components/AppointmentBooking/AppointmentBooking';
 import { LanguageToggle } from './components/LanguageToggle/LanguageToggle';
 import { LoadingScreen } from './components/LoadingScreen/LoadingScreen';
 
@@ -16,6 +17,8 @@ function AppContent() {
       const hash = window.location.hash.slice(1);
       if (hash === 'qr') {
         setPage('qr');
+      } else if (hash === 'book' || hash === 'appointments') {
+        setPage('appointments');
       } else {
         setPage('form');
       }
@@ -43,7 +46,7 @@ function AppContent() {
     <div className="container">
       {/* Header */}
       <header className="header">
-        {page === 'qr' ? (
+        {(page === 'qr' || page === 'appointments') ? (
           <a
             href="#"
             className="back-link"
@@ -74,7 +77,7 @@ function AppContent() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <LanguageToggle />
           <div className="badge">
-            {page === 'qr' ? t('QR Generator', 'مولد QR') : 'Mirzaam 2025'}
+            {page === 'qr' ? t('QR Generator', 'مولد QR') : page === 'appointments' ? t('Book Now', 'احجز الآن') : 'Mirzaam 2025'}
           </div>
         </div>
       </header>
@@ -85,16 +88,20 @@ function AppContent() {
           <h1>
             {page === 'qr'
               ? t('QR Code', 'رمز QR')
+              : page === 'appointments'
+              ? t('Book an Appointment', 'احجز موعد')
               : t('Get in Touch', 'تواصل معنا')}
           </h1>
           <p>
             {page === 'qr'
               ? t('Generate a QR code for your form', 'أنشئ رمز QR لنموذجك')
+              : page === 'appointments'
+              ? t('Schedule a site visit or office meeting', 'حدد موعد زيارة موقع أو اجتماع في المكتب')
               : t("We'll reach out shortly", 'سنتواصل معك قريباً')}
           </p>
         </div>
 
-        {page === 'qr' ? <QRGenerator /> : <LeadForm />}
+        {page === 'qr' ? <QRGenerator /> : page === 'appointments' ? <AppointmentBooking /> : <LeadForm />}
       </main>
 
       {/* Footer */}
