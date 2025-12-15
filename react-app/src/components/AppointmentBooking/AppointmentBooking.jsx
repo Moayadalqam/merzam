@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { kuwaitCities } from '../../data/kuwaitAreas';
 import './AppointmentBooking.css';
 
 // Google Apps Script Web App URL for appointments
@@ -30,9 +31,18 @@ const meetingTypes = [
 export function AppointmentBooking() {
   const { lang, t } = useLanguage();
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     phone: '',
     countryCode: '+965',
+    area: '',
+    locationOption: 'manual', // 'manual' or 'maps'
+    googleMapsLink: '',
+    block: '',
+    streetName: '',
+    houseNumber: '',
+    siteContactNumber: '',
+    siteContactCountryCode: '+965',
     meetingType: '',
     date: '',
     timeSlot: '',
@@ -87,14 +97,47 @@ export function AppointmentBooking() {
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = t('Name is required', 'الاسم مطلوب');
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = t('First name is required', 'الاسم الأول مطلوب');
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = t('Last name is required', 'الاسم الأخير مطلوب');
     }
 
     if (!formData.phone.trim()) {
       newErrors.phone = t('Phone is required', 'رقم الهاتف مطلوب');
     } else if (!/^\d{7,15}$/.test(formData.phone.replace(/\s/g, ''))) {
       newErrors.phone = t('Invalid phone number', 'رقم هاتف غير صالح');
+    }
+
+    if (!formData.area) {
+      newErrors.area = t('Please select an area', 'يرجى اختيار المنطقة');
+    }
+
+    // Validate location based on selected option
+    if (formData.locationOption === 'maps') {
+      if (!formData.googleMapsLink.trim()) {
+        newErrors.googleMapsLink = t('Google Maps link is required', 'رابط خرائط جوجل مطلوب');
+      } else if (!formData.googleMapsLink.includes('google.com/maps') && !formData.googleMapsLink.includes('goo.gl/maps')) {
+        newErrors.googleMapsLink = t('Please enter a valid Google Maps link', 'يرجى إدخال رابط خرائط جوجل صحيح');
+      }
+    } else {
+      if (!formData.block.trim()) {
+        newErrors.block = t('Block is required', 'رقم القطعة مطلوب');
+      }
+      if (!formData.streetName.trim()) {
+        newErrors.streetName = t('Street name is required', 'اسم الشارع مطلوب');
+      }
+      if (!formData.houseNumber.trim()) {
+        newErrors.houseNumber = t('House number is required', 'رقم المنزل مطلوب');
+      }
+    }
+
+    if (!formData.siteContactNumber.trim()) {
+      newErrors.siteContactNumber = t('Site contact number is required', 'رقم التواصل مطلوب');
+    } else if (!/^\d{7,15}$/.test(formData.siteContactNumber.replace(/\s/g, ''))) {
+      newErrors.siteContactNumber = t('Invalid phone number', 'رقم هاتف غير صالح');
     }
 
     if (!formData.meetingType) {
@@ -126,17 +169,32 @@ export function AppointmentBooking() {
 
     setIsLoading(true);
 
+    const fullName = `${formData.firstName} ${formData.lastName}`.trim();
     const fullPhone = `${formData.countryCode} ${formData.phone}`.trim();
+    const siteContactFull = `${formData.siteContactCountryCode} ${formData.siteContactNumber}`.trim();
     const meetingTypeLabel = meetingTypes.find(m => m.id === formData.meetingType)?.labelEn || formData.meetingType;
     const timeSlotLabel = timeSlots.find(s => s.id === formData.timeSlot)?.labelEn || formData.timeSlot;
+    const areaLabel = kuwaitCities.find(c => c.id === formData.area)?.labelEn || formData.area;
+
+    // Build location string
+    let locationString = '';
+    if (formData.locationOption === 'maps') {
+      locationString = formData.googleMapsLink;
+    } else {
+      locationString = `Block ${formData.block}, ${formData.streetName}, House ${formData.houseNumber}`;
+    }
 
     try {
       // Store locally (simulating database)
       const stored = localStorage.getItem('woodLocationAppointments');
       const appointments = stored ? JSON.parse(stored) : [];
       appointments.push({
-        name: formData.name,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         phone: fullPhone,
+        area: formData.area,
+        location: locationString,
+        siteContactNumber: siteContactFull,
         meetingType: formData.meetingType,
         date: formData.date,
         timeSlot: formData.timeSlot,
@@ -150,8 +208,13 @@ export function AppointmentBooking() {
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: formData.name,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          fullName: fullName,
           phone: fullPhone,
+          area: areaLabel,
+          location: locationString,
+          siteContactNumber: siteContactFull,
           meetingType: meetingTypeLabel,
           date: formData.date,
           timeSlot: timeSlotLabel,
@@ -160,12 +223,16 @@ export function AppointmentBooking() {
 
       // Send email confirmation via FormSubmit
       const emailFormData = new FormData();
-      emailFormData.append('Name', formData.name);
+      emailFormData.append('First Name', formData.firstName);
+      emailFormData.append('Last Name', formData.lastName);
       emailFormData.append('Phone', fullPhone);
+      emailFormData.append('Area', areaLabel);
+      emailFormData.append('Location', locationString);
+      emailFormData.append('Site Contact', siteContactFull);
       emailFormData.append('Meeting Type', meetingTypeLabel);
       emailFormData.append('Date', formData.date);
       emailFormData.append('Time', timeSlotLabel);
-      emailFormData.append('_subject', `New Appointment Booking - ${formData.name}`);
+      emailFormData.append('_subject', `New Appointment Booking - ${fullName}`);
       emailFormData.append('_captcha', 'false');
       emailFormData.append('_template', 'table');
 
@@ -187,9 +254,18 @@ export function AppointmentBooking() {
 
   const resetForm = () => {
     setFormData({
-      name: '',
+      firstName: '',
+      lastName: '',
       phone: '',
       countryCode: '+965',
+      area: '',
+      locationOption: 'manual',
+      googleMapsLink: '',
+      block: '',
+      streetName: '',
+      houseNumber: '',
+      siteContactNumber: '',
+      siteContactCountryCode: '+965',
       meetingType: '',
       date: '',
       timeSlot: '',
@@ -283,15 +359,28 @@ export function AppointmentBooking() {
       <div className="form-section">
         <h3 className="section-title">{t('Your Details', 'بياناتك')}</h3>
 
-        <div className={`field ${errors.name ? 'error' : ''}`}>
-          <label>{t('Full Name', 'الاسم الكامل')} *</label>
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) => setField('name', e.target.value)}
-            placeholder={t('Enter your name', 'أدخل اسمك')}
-          />
-          {errors.name && <span className="error-text">{errors.name}</span>}
+        <div className="field-row">
+          <div className={`field ${errors.firstName ? 'error' : ''}`}>
+            <label>{t('First Name', 'الاسم الأول')} *</label>
+            <input
+              type="text"
+              value={formData.firstName}
+              onChange={(e) => setField('firstName', e.target.value)}
+              placeholder={t('First name', 'الاسم الأول')}
+            />
+            {errors.firstName && <span className="error-text">{errors.firstName}</span>}
+          </div>
+
+          <div className={`field ${errors.lastName ? 'error' : ''}`}>
+            <label>{t('Last Name', 'الاسم الأخير')} *</label>
+            <input
+              type="text"
+              value={formData.lastName}
+              onChange={(e) => setField('lastName', e.target.value)}
+              placeholder={t('Last name', 'الاسم الأخير')}
+            />
+            {errors.lastName && <span className="error-text">{errors.lastName}</span>}
+          </div>
         </div>
 
         <div className={`field ${errors.phone ? 'error' : ''}`}>
@@ -320,6 +409,129 @@ export function AppointmentBooking() {
             </div>
           </div>
           {errors.phone && <span className="error-text">{errors.phone}</span>}
+        </div>
+
+        <div className={`field ${errors.area ? 'error' : ''}`}>
+          <label>{t('Area', 'المنطقة')} *</label>
+          <select
+            value={formData.area}
+            onChange={(e) => setField('area', e.target.value)}
+            className="area-select"
+          >
+            <option value="">{t('Select area', 'اختر المنطقة')}</option>
+            {kuwaitCities.map((city) => (
+              <option key={city.id} value={city.id}>
+                {lang === 'ar' ? city.labelAr : city.labelEn}
+              </option>
+            ))}
+          </select>
+          {errors.area && <span className="error-text">{errors.area}</span>}
+        </div>
+      </div>
+
+      {/* Location Details */}
+      <div className="form-section">
+        <h3 className="section-title">{t('Location Details', 'تفاصيل الموقع')}</h3>
+
+        <div className="location-options">
+          <button
+            type="button"
+            className={`location-option-btn ${formData.locationOption === 'maps' ? 'active' : ''}`}
+            onClick={() => setField('locationOption', 'maps')}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span>{t('Google Maps Link', 'رابط خرائط جوجل')}</span>
+          </button>
+          <button
+            type="button"
+            className={`location-option-btn ${formData.locationOption === 'manual' ? 'active' : ''}`}
+            onClick={() => setField('locationOption', 'manual')}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+            </svg>
+            <span>{t('Enter Manually', 'إدخال يدوي')}</span>
+          </button>
+        </div>
+
+        {formData.locationOption === 'maps' ? (
+          <div className={`field ${errors.googleMapsLink ? 'error' : ''}`}>
+            <label>{t('Google Maps Link', 'رابط خرائط جوجل')} *</label>
+            <input
+              type="url"
+              value={formData.googleMapsLink}
+              onChange={(e) => setField('googleMapsLink', e.target.value)}
+              placeholder={t('Paste Google Maps link here', 'الصق رابط خرائط جوجل هنا')}
+            />
+            {errors.googleMapsLink && <span className="error-text">{errors.googleMapsLink}</span>}
+          </div>
+        ) : (
+          <>
+            <div className={`field ${errors.block ? 'error' : ''}`}>
+              <label>{t('Block', 'القطعة')} *</label>
+              <input
+                type="text"
+                value={formData.block}
+                onChange={(e) => setField('block', e.target.value)}
+                placeholder={t('Block number', 'رقم القطعة')}
+              />
+              {errors.block && <span className="error-text">{errors.block}</span>}
+            </div>
+
+            <div className={`field ${errors.streetName ? 'error' : ''}`}>
+              <label>{t('Street Name', 'اسم الشارع')} *</label>
+              <input
+                type="text"
+                value={formData.streetName}
+                onChange={(e) => setField('streetName', e.target.value)}
+                placeholder={t('Street name', 'اسم الشارع')}
+              />
+              {errors.streetName && <span className="error-text">{errors.streetName}</span>}
+            </div>
+
+            <div className={`field ${errors.houseNumber ? 'error' : ''}`}>
+              <label>{t('House Number', 'رقم المنزل')} *</label>
+              <input
+                type="text"
+                value={formData.houseNumber}
+                onChange={(e) => setField('houseNumber', e.target.value)}
+                placeholder={t('House number', 'رقم المنزل')}
+              />
+              {errors.houseNumber && <span className="error-text">{errors.houseNumber}</span>}
+            </div>
+          </>
+        )}
+
+        <div className={`field ${errors.siteContactNumber ? 'error' : ''}`}>
+          <label>{t('Site Contact Number', 'رقم التواصل للموقع')} *</label>
+          <div className="phone-input-group">
+            <div className="country-code-select">
+              <select
+                value={formData.siteContactCountryCode}
+                onChange={(e) => setField('siteContactCountryCode', e.target.value)}
+              >
+                <option value="+965">+965</option>
+                <option value="+966">+966</option>
+                <option value="+971">+971</option>
+                <option value="+973">+973</option>
+                <option value="+974">+974</option>
+                <option value="+968">+968</option>
+              </select>
+            </div>
+            <div className="phone-number-input">
+              <input
+                type="tel"
+                value={formData.siteContactNumber}
+                onChange={(e) => setField('siteContactNumber', e.target.value.replace(/\D/g, ''))}
+                placeholder={t('Contact number for site', 'رقم التواصل للموقع')}
+              />
+            </div>
+          </div>
+          {errors.siteContactNumber && <span className="error-text">{errors.siteContactNumber}</span>}
         </div>
       </div>
 

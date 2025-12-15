@@ -23,7 +23,7 @@ npm run lint     # ESLint check
 
 ```
 react-app/src/
-├── App.jsx                    # Hash routing (#qr or empty), loading screen
+├── App.jsx                    # Hash routing, loading screen
 ├── main.jsx                   # React entry point
 ├── context/LanguageContext.jsx # AR/EN with RTL, t(en, ar) helper
 ├── hooks/useLeadForm.js       # useReducer state, localStorage persistence
@@ -39,10 +39,21 @@ react-app/src/
     │   ├── ScopeSelector.jsx     # Checkbox grid for work items
     │   ├── SiteVisitBooking.jsx  # Date/time slot selection
     │   └── ProjectAssessment.jsx # Priority/value dropdowns
+    ├── AppointmentBooking/    # Standalone booking system (via #book)
     ├── LanguageToggle/        # AR/EN switcher
     ├── LoadingScreen/         # Initial loading animation
-    └── QRGenerator/           # QR code generation (via #qr hash)
+    └── QRGenerator/           # QR code generation (via #qr)
 ```
+
+### Hash Routes
+
+App.jsx uses `window.location.hash` for client-side routing:
+
+| Route | Component | Description |
+|-------|-----------|-------------|
+| `#` or empty | LeadForm | Main lead capture form |
+| `#qr` | QRGenerator | QR code generator for booth |
+| `#book` or `#appointments` | AppointmentBooking | Site visit/office meeting booking |
 
 ### Translation Pattern
 
@@ -55,10 +66,10 @@ const { t } = useLanguage();
 ### Dual Form Submission
 
 `LeadForm.jsx` submits to both endpoints in parallel:
-1. **Google Sheets** - `no-cors` fire-and-forget POST to Apps Script (line 14)
-2. **FormSubmit.co** - AJAX POST for email notification (line 11)
+1. **Google Sheets** - `no-cors` fire-and-forget POST to Apps Script
+2. **FormSubmit.co** - AJAX POST for email notification
 
-Required fields: firstName, secondName, phone. Validation in `useLeadForm.js:131`.
+Required fields: firstName, secondName, phone. Validation in `useLeadForm.js`.
 
 ### Form State
 
@@ -86,6 +97,12 @@ Managed by `useReducer` in `useLeadForm.js`. Auto-saves to localStorage key `woo
 ### Adding New Scope Items
 
 Add to `scopeItems` array in `data/services.js` with `{ id, labelEn, labelAr }`.
+
+### Appointments System
+
+Standalone booking at `#book`. See `APPOINTMENTS_SETUP.md` for Google Apps Script setup.
+
+Features: Site visit / office meeting types, 30-day date range, 9 AM - 5 PM hourly slots, double-booking prevention.
 
 ## Brand Colors
 
