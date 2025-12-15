@@ -11,7 +11,9 @@
       "Bash(where:*)",
       "Bash(vercel --prod:*)",
       "Bash(vercel ls:*)",
-      "Bash(vercel alias:*)"
+      "Bash(vercel alias:*)",
+      "Bash(vercel projects:*)",
+      "Bash(vercel link:*)"
     ]
   }
 }
